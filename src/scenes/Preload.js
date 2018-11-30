@@ -5,9 +5,15 @@ export default class Preload extends Phaser.Scene {
         });
     }
 
-    preload() { }
+    preload() {
+
+    }
 
     create() {
         //this.scene.start();
+    }
+
+    update() {
+
     }
 }
