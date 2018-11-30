@@ -1,26 +1,24 @@
 import 'phaser';
+import Config from './config/config';
+import PreloadScene from './scenes/PreloadScene';
 
-import Preload from './scenes/Preload';
+class Game extends Phaser.Game {
+    constructor() {
+        super(Config);
 
-const config = {
-    type: Phaser.AUTO,
-    parent: 'gameParent',
-    width: 800,
-    height: 600,
-    physics: {
-        default: 'arcade'
-    },
-    scene: {
-        //Preload
-        preload: preload, create: create, update: update, render: render
-    },
-};
+        this.scene.add('PreloadScene', PreloadScene);
+        this.scene.start('PreloadScene');
+    }
+}
 
+window.onload = function () {
+    window.game = new Game();
+}
 
-var game = new Phaser.Game(config);
-console.log(game)
+/* var game = new Phaser.Game(config);
+console.log(game) */
 
-function preload() {
+/* function preload() {
     this.load.image('vu', 'assets/logo.png');
     this.load.image('logo', 'assets/logo.png');
     this.load.image('bg', 'assets/logo.png');
@@ -116,3 +114,4 @@ function update() {
 function render() {
 
 }
+ */

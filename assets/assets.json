@@ -1,0 +1,22 @@
+{ 
+    "Preload": {
+        "files": [
+            {
+                "type": "image",
+                "key": "logo",
+                "url": "assets/logo.png"
+            },
+            {
+                "type": "audio",
+                "key": "song",
+                "url": "assets/music/song.mp3"
+            }
+
+        ]
+    },
+    "meta": {
+        "game": "LD43 - Team Opel Astra",
+        "author": "anderskristo & bacon",
+        "URL": "https://github.com/aquintra/ludumdare43"
+    }
+}
