@@ -1,3 +1,1 @@
-# ludumdare43
-
-## Is this real life
+# Lodum Dare 43 - Team Opel Astra
