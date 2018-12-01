@@ -39,8 +39,8 @@
             },
             {
                 "type": "audio",
-                "key": "song",
-                "url": "assets/music/song.mp3"
+                "key": "jumpSound",
+                "url": "assets/sfx/jump.wav"
             },
             {
                 "type": "audio",

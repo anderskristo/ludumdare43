@@ -8,23 +8,19 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.alive = true;
         this.input = this.scene.input.keyboard.createCursorKeys();
 
+        this.jumpSound = this.scene.sound.add('jumpSound');
+
+        // Player should jump
         this.scene.input.keyboard.on('keydown_SPACE', function () {
             this.body.setVelocityY(500);
+            this.jumpSound.play();
         }, this);
 
         this.scene.add.existing(this);
     }
-
     update(time, delta) {
-        console.log(this.alive)
         if (this.alive) {
 
-            if (this.input.up.isDown) {
-                this.body.setVelocityY(-64);
-            }
-            else if (this.input.down.isDown) {
-                this.body.setVelocityY(64);
-            }
         }
     }
 }
