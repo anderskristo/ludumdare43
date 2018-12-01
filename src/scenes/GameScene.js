@@ -20,6 +20,17 @@ export default class GameScene extends Phaser.Scene {
     create() {
         console.log('Game Scene');
 
+        // coin image used as tileset
+        // var coinTiles = this.map.addTilesetImage('coin');
+        // // add coins as tiles
+        // this.coinLayer = this.map.createDynamicLayer('Coins', coinTiles, 0, 0);
+
+        this.createTiledMap();
+        this.initPhysics();
+        this.createPlayer();
+    }
+
+    createTiledMap() {
         // load the map 
         this.map = this.make.tilemap({ key: 'map' });
 
@@ -30,24 +41,29 @@ export default class GameScene extends Phaser.Scene {
         // the player will collide with this layer
         this.groundLayer.setCollisionByExclusion([-1]);
 
-        // coin image used as tileset
-        var coinTiles = this.map.addTilesetImage('coin');
-        // add coins as tiles
-        this.coinLayer = this.map.createDynamicLayer('Coins', coinTiles, 0, 0);
-
         // set the boundaries of our game world
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
 
-        this.createPlayer();
+        this.cameras.main.setBackgroundColor(0xffc0cb);
+    }
+
+    /**
+     * Tell the physics system to collide player, appropriate tiles, 
+     * and other objects based on group, run callbacks when appropriate
+     */
+    initPhysics() {
+        //this.physics.add.collider(this.player, this.groundLayer);
     }
 
     createPlayer() {
         this.player = new Player({
             scene: this,
-            x: 0,
+            x: 72,
             y: 0
         });
+
+        console.log(this.player);
     }
 
     // this function will be called when the player touches a coin

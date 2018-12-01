@@ -22,12 +22,6 @@
                 "atlasURL": "assets/player.json"
             },
             {
-                "type": "atlas",
-                "key": "player",
-                "textureURL": "assets/player.png",
-                "atlasURL": "assets/player.json"
-            },
-            {
                 "type": "image",
                 "key": "coin",
                 "url": "assets/coinGold.png"
