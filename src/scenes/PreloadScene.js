@@ -1,5 +1,5 @@
 import 'phaser';
-import GameScene from './GameScene';
+import MenuScene from './MenuScene';
 
 export default class PreloadScene extends Phaser.Scene {
     constructor() {
@@ -35,7 +35,7 @@ export default class PreloadScene extends Phaser.Scene {
     }
 
     create() {
-        this.scene.add('GameScene', GameScene);
-        this.scene.start('GameScene');
+        this.scene.add('MenuScene', MenuScene);
+        this.scene.start('MenuScene');
     }
 }

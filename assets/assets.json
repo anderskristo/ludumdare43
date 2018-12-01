@@ -33,6 +33,11 @@
                 "url": "assets/coinGold.png"
             },
             {
+                "type": "image",
+                "key": "playButton",
+                "url": "assets/btn_play.png"
+            },
+            {
                 "type": "audio",
                 "key": "song",
                 "url": "assets/music/song.mp3"
