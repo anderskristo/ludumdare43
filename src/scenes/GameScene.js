@@ -49,7 +49,6 @@ export default class GameScene extends Phaser.Scene {
         this.physics.world.bounds.height = this.groundLayer.height;
 
         this.cameras.main.setBackgroundColor(0xffc0cb);
-        this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     /**
@@ -70,14 +69,17 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createEnemy() {
-        console.log('Spawning enemy at',this.groundLayer.x+800, 40);
-        this.enemies.push(
-            new Enemy({
-                scene: this,
-                x: this.groundLayer.x+800,
-                y: 40
-            })
-        );
+        var spawnX = this.groundLayer.x+800;
+        var spawnY = (Math.random() > 0.5 ? 'spawn in air' : 'spawn on ground');
+        console.log('Spawning enemy at',spawnX, spawnY);
+        var enemy = new Enemy({
+            scene: this,
+            x: spawnX,
+            y: spawnY
+        });
+
+        this.physics.add.collider(this.player, enemy);
+        this.enemies.push(enemy);
     }
 
     // this function will be called when the player touches a coin
@@ -88,30 +90,24 @@ export default class GameScene extends Phaser.Scene {
     update(time, delta) {
         // The player class update method must be called each cycle as the class is not currently part of a group
         this.player.update(time, delta);
+        var moveSpeed = this.moveSpeed;
+        var enemies = this.enemies;
+        this.groundLayer.x -= moveSpeed;
+        //var firstElems = this.groundLayer.culledTiles[0].layer.data[0].slice(0, 10);
+        //this.groundLayer.culledTiles[0].layer.data[0].push(firstElems);
 
-        if (this.cursors.right.isDown) {
-            var moveSpeed = this.moveSpeed;
-            var enemies = this.enemies;
-            this.groundLayer.x = this.groundLayer.x - moveSpeed;
-            //var firstElems = this.groundLayer.culledTiles[0].layer.data[0].slice(0, 10);
-            //this.groundLayer.culledTiles[0].layer.data[0].push(firstElems);
+        // Endless scrolling fugly hack
+        if (this.groundLayer.x < -this.map.widthInPixels / 2) {
+            this.groundLayer.x = 0;
+            this.createEnemy();
+        }
 
-            // Endless scrolling fugly hack
-            if (this.groundLayer.x < -this.map.widthInPixels / 2) {
-                this.groundLayer.x = 0;
-                this.createEnemy();
+        enemies.forEach(function(enemy, index) {
+            enemy.x -= moveSpeed;
+            if (enemy.x < -50) {
+                enemy.destroy();
+                enemies.splice(index, 1);
             }
-
-            enemies.forEach(function(enemy, index) {
-                enemy.x -= moveSpeed;
-                if (enemy.x < -50) {
-                    enemy.destroy();
-                    enemies.splice(index, 1);
-                }
-            })
-        }
-        else if (this.cursors.left.isDown) {
-            this.groundLayer.x = this.groundLayer.x + moveSpeed;
-        }
+        })
     }
 }
