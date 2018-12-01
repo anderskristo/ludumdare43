@@ -15,14 +15,21 @@ export default class GameScene extends Phaser.Scene {
         this.cursors;
         this.groundLayer;
         this.coinLayer;
+        this.enemiesLayer;
         this.text;
         this.score = 0;
         this.moveSpeed = 10;
-        this.startColor = 'green';
+        this.colors = ['green','blue','yellow','red'];
+        this.startColor = this.colors[0];
     }
 
     create() {
-        console.log('Game Scene');
+        // coin image used as tileset
+        // var coinTiles = this.map.addTilesetImage('coin');
+        // // add coins as tiles
+        // this.coinLayer = this.map.createDynamicLayer('Coins', coinTiles, 0, 0);
+        this.enemiesLayer = this.physics.add.group(null);
+        this.enemiesLayer.runChildUpdate = true;
 
         this.createTiledMap();
         this.createPlayer();
@@ -55,6 +62,8 @@ export default class GameScene extends Phaser.Scene {
     initPhysics() {
         console.log(this.player, this.groundLayer)
         this.physics.add.collider(this.player, this.groundLayer);
+        this.physics.add.collider(this.enemiesLayer, this.groundLayer);
+        this.physics.add.collider(this.player, this.enemiesLayer, this.onCollision);
     }
 
     createPlayer() {
@@ -69,6 +78,8 @@ export default class GameScene extends Phaser.Scene {
     createEnemy() {
         var spawnX = this.groundLayer.x + 800;
         var spawnY = 450;
+        var color = Math.round(Math.random() * this.colors.length);
+        console.log('colorindex',color)
         if (Math.random() < 0.5) {
             spawnY -= this.player.height;
         }
@@ -76,11 +87,12 @@ export default class GameScene extends Phaser.Scene {
         var enemy = new Enemy({
             scene: this,
             x: spawnX,
-            y: spawnY
+            y: spawnY,
+            color: this.colors[color]
         });
 
-        this.physics.add.collider(this.player, enemy);
         this.enemies.push(enemy);
+        this.enemiesLayer.add(enemy);
     }
 
     loadMusic() {
@@ -93,6 +105,17 @@ export default class GameScene extends Phaser.Scene {
     // this function will be called when the player touches a coin
     collectCoin(sprite, tile) {
 
+    }
+
+    onCollision(player, enemy)
+    {
+        console.log('collision',player.color,enemy.color);
+        if (player.color === enemy.color) {
+            console.log('Add score')
+        } else {
+            player.alive = false
+            enemy.x += 20
+        }
     }
 
     gameOver() {
@@ -114,13 +137,9 @@ export default class GameScene extends Phaser.Scene {
         // The player class update method must be called each cycle as the class is not currently part of a group
         this.player.update(time, delta);
 
-        console.log(this.player.color)
-
         var moveSpeed = this.moveSpeed;
         var enemies = this.enemies;
         this.groundLayer.x -= moveSpeed;
-        //var firstElems = this.groundLayer.culledTiles[0].layer.data[0].slice(0, 10);
-        //this.groundLayer.culledTiles[0].layer.data[0].push(firstElems);
 
         // Endless scrolling fugly hack
         if (this.groundLayer.x < -this.map.widthInPixels / 2) {
