@@ -27,8 +27,8 @@ export default class GameScene extends Phaser.Scene {
         // this.coinLayer = this.map.createDynamicLayer('Coins', coinTiles, 0, 0);
 
         this.createTiledMap();
-        this.initPhysics();
         this.createPlayer();
+        this.initPhysics();
     }
 
     createTiledMap() {
@@ -55,17 +55,16 @@ export default class GameScene extends Phaser.Scene {
      * and other objects based on group, run callbacks when appropriate
      */
     initPhysics() {
-        //this.physics.add.collider(this.player, this.groundLayer);
+        console.log(this.player, this.groundLayer)
+        this.physics.add.collider(this.player, this.groundLayer);
     }
 
     createPlayer() {
         this.player = new Player({
             scene: this,
             x: 72,
-            y: 0
+            y: 430
         });
-
-        console.log(this.player);
     }
 
     // this function will be called when the player touches a coin
@@ -74,6 +73,9 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        // The player class update method must be called each cycle as the class is not currently part of a group
+        this.player.update(time, delta);
+
         if (this.cursors.right.isDown) {
             this.groundLayer.x = this.groundLayer.x - this.moveSpeed;
             //var firstElems = this.groundLayer.culledTiles[0].layer.data[0].slice(0, 10);
