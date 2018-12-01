@@ -2,9 +2,35 @@
     "Preload": {
         "files": [
             {
+                "type": "tilemapTiledJSON",
+                "key": "map",
+                "url": "assets/map.json"
+            },
+            {
+                "type": "spritesheet",
+                "key": "tiles",
+                "url": "assets/tiles.png",
+                "frameConfig": {
+                    "frameWidth": 70,
+                    "frameHeight": 70
+                }
+            },
+            {
+                "type": "atlas",
+                "key": "player",
+                "textureURL": "assets/player.png",
+                "atlasURL": "assets/player.json"
+            },
+            {
+                "type": "atlas",
+                "key": "player",
+                "textureURL": "assets/player.png",
+                "atlasURL": "assets/player.json"
+            },
+            {
                 "type": "image",
-                "key": "logo",
-                "url": "assets/logo.png"
+                "key": "coin",
+                "url": "assets/coinGold.png"
             },
             {
                 "type": "audio",
