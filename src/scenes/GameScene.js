@@ -96,7 +96,10 @@ export default class GameScene extends Phaser.Scene {
     }
 
     loadMusic() {
-
+        this.music = this.sound.add('trance');
+        this.music.setLoop(true);
+        this.music.play();
+        this.music.setVolume(.5);
     }
 
     // this function will be called when the player touches a coin
