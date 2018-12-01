@@ -22,6 +22,12 @@
                 "atlasURL": "assets/player.json"
             },
             {
+                "type": "atlas",
+                "key": "enemy",
+                "textureURL": "assets/enemy.png",
+                "atlasURL": "assets/enemy.json"
+            },
+            {
                 "type": "image",
                 "key": "coin",
                 "url": "assets/coinGold.png"
