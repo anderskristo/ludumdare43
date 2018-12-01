@@ -21,6 +21,8 @@ export default class GameScene extends Phaser.Scene {
         this.moveSpeed = 10;
         this.colors = ['0x00ff00','0x0000ff','0xffff00','0xff0000'];
         this.startColor = this.colors[0];
+        this.enemySpawnChance = 0.01;
+        this.enemySpawnChanceIncreasingFactor = 0.01;
     }
 
     create() {
@@ -76,7 +78,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createEnemy() {
-        var spawnX = this.groundLayer.x + 800;
+        var spawnX = 800;
         var spawnY = 450;
         var color = Math.round(Math.random() * (this.colors.length-1));
 
@@ -113,6 +115,9 @@ export default class GameScene extends Phaser.Scene {
         if (player.color === enemy.color) {
             console.log('Add score')
             enemy.destroy();
+            this.enemySpawnChance += this.enemySpawnChanceIncreasingFactor;
+            this.moveSpeed += this.enemySpawnChanceIncreasingFactor;
+            console.log('Increased difficulty. Spawnchance',this.enemySpawnChance)
         } else {
             player.alive = false
             enemy.x += 20
@@ -145,6 +150,9 @@ export default class GameScene extends Phaser.Scene {
         // Endless scrolling fugly hack
         if (this.groundLayer.x < -this.map.widthInPixels / 2) {
             this.groundLayer.x = 0;
+        }
+
+        if (this.player.alive && Math.random() < this.enemySpawnChance) {
             this.createEnemy();
         }
 
