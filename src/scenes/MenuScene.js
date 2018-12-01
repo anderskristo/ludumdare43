@@ -19,6 +19,8 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     create() {
+        console.log('Menu Scene');
+
         this.createTiledMap();
         this.createPlayer();
         this.initPhysics();
@@ -30,7 +32,7 @@ export default class MenuScene extends Phaser.Scene {
 
         var playButton = this.add.image(400, 120, "playButton").setInteractive();
 
-        playButton.on("pointerdown", function(e) {
+        playButton.on("pointerdown", function (e) {
             self.scene.start('GameScene');
         });
     }
