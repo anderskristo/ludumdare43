@@ -10,6 +10,11 @@
                 "type": "audio",
                 "key": "song",
                 "url": "assets/music/song.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "confused",
+                "url": "assets/music/Confused.mp3"
             }
 
         ]
