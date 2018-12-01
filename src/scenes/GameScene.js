@@ -23,11 +23,6 @@ export default class GameScene extends Phaser.Scene {
     create() {
         console.log('Game Scene');
 
-        // coin image used as tileset
-        // var coinTiles = this.map.addTilesetImage('coin');
-        // // add coins as tiles
-        // this.coinLayer = this.map.createDynamicLayer('Coins', coinTiles, 0, 0);
-
         this.createTiledMap();
         this.createPlayer();
         this.initPhysics();
@@ -87,9 +82,15 @@ export default class GameScene extends Phaser.Scene {
 
     }
 
+    gameOver() {
+        this.moveSpeed = 0;
+        this.gameOverText = this.add.text(16, 200, 'You are dead.\nScore: ' + this.score, { fontSize: '32px', fill: '#000' });
+    }
+
     update(time, delta) {
         // The player class update method must be called each cycle as the class is not currently part of a group
         this.player.update(time, delta);
+
         var moveSpeed = this.moveSpeed;
         var enemies = this.enemies;
         this.groundLayer.x -= moveSpeed;
@@ -109,5 +110,12 @@ export default class GameScene extends Phaser.Scene {
                 enemies.splice(index, 1);
             }
         })
+
+        /**
+         * If Player dies, kill the game.
+         */
+        if (this.player.alive === false) {
+            this.gameOver();
+        }
     }
 }
