@@ -64,9 +64,12 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createEnemy() {
-        var spawnX = this.groundLayer.x + 800;
-        var spawnY = (Math.random() > 0.5 ? 'spawn in air' : 'spawn on ground');
-        console.log('Spawning enemy at', spawnX, spawnY);
+        var spawnX = this.groundLayer.x+800;
+        var spawnY = 450;
+        if (Math.random() < 0.5) {
+            spawnY -= this.player.height;
+        }
+ 
         var enemy = new Enemy({
             scene: this,
             x: spawnX,
