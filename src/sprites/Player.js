@@ -11,9 +11,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         this.jumpSound = this.scene.sound.add('jumpSound');
         // Player should jump
-        // this.scene.input.keyboard.on('keydown_SPACE', function () {
-        //     this.jump();
-        // }, this);
 
         console.log(this.color);
         this.scene.add.existing(this);
@@ -34,8 +31,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     update(time, delta) {
         if (this.alive) {
-            if (this.input.up.isDown && this.body.onFloor()) {
-                this.jump();
+            if (this.body.onFloor()) {
+                this.scene.input.keyboard.on('keydown_SPACE', function () {
+                    this.jump();
+                }, this);
             }
         } else {
             // How can we die?

@@ -20,12 +20,12 @@ export default class GameScene extends Phaser.Scene {
         this.score = 0;
         this.moveSpeed = 10;
         this.speedIncrement = 1;
-        this.colors = ['0x00ff00','0x0000ff','0xffff00','0xff0000'];
+        this.colors = ['0x00ff00', '0x0000ff', '0xffff00', '0xff0000'];
         this.startColor = this.colors[0];
         this.enemySpawnMinTime = 1000;
         this.enemySpawnMaxTime = 2000;
         this.enemyIsSpawning = false;
-        
+
         var self;
     }
 
@@ -41,6 +41,7 @@ export default class GameScene extends Phaser.Scene {
         this.createPlayer();
         this.initPhysics();
         this.loadMusic();
+        this.scoreHud();
 
         self = this;
     }
@@ -86,7 +87,8 @@ export default class GameScene extends Phaser.Scene {
     createEnemy() {
         var spawnX = 800;
         var spawnY = 450;
-        var color = Math.round(Math.random() * (this.colors.length-1));
+        console.log('colorindex', color)
+        var color = Math.round(Math.random() * (this.colors.length - 1));
 
         if (Math.random() < 0.5) {
             spawnY -= this.player.height;
@@ -115,9 +117,26 @@ export default class GameScene extends Phaser.Scene {
 
     }
 
-    onCollision(player, enemy)
-    {
-        console.log('collision',player.color,enemy.color);
+    addScore(value) {
+        this.score += value;
+        this.scoreText.setText(this.score)
+    }
+
+    scoreHud() {
+        this.scoreText = this.add.text(16, 200, this.score, {
+            fontFamily: 'sans-serif',
+            color: '#00000040',
+            align: 'center',
+            fontSize: 102,
+            fontStyle: 'bold',
+            padding: 0,
+        });
+
+        this.scoreText.setPosition(game.canvas.width / 2 - this.scoreText.width, 100);
+    }
+
+    onCollision(player, enemy) {
+        console.log('collision', player.color, enemy.color);
         if (player.color === enemy.color) {
             var colorIndex = Math.round(Math.random() * (self.colors.length-1));
             enemy.destroy();
@@ -141,13 +160,15 @@ export default class GameScene extends Phaser.Scene {
         var playButton = this.add.image(400, 120, "playButton").setInteractive();
 
         playButton.on("pointerdown", function (e) {
-            self.scene.restart('GameScene');
+            //self.scene.restart('GameScene');
+            self.scene.start('GameScene');
         });
     }
 
     update(time, delta) {
         // The player class update method must be called each cycle as the class is not currently part of a group
         this.player.update(time, delta);
+        this.addScore(1);
 
         var moveSpeed = this.moveSpeed;
         var enemies = this.enemies;
@@ -162,12 +183,12 @@ export default class GameScene extends Phaser.Scene {
             var self = this;
             this.enemyIsSpawning = true;
             var spawnDelay = Math.random() * (this.enemySpawnMaxTime - this.enemySpawnMinTime) + this.enemySpawnMinTime;
-            setTimeout(function() {
+            setTimeout(function () {
                 self.enemyIsSpawning = false;
-                self.createEnemy();    
+                self.createEnemy();
             }, spawnDelay);
         }
-        
+
         enemies.forEach(function (enemy, index) {
             enemy.x -= moveSpeed;
             if (enemy.x < -50) {
