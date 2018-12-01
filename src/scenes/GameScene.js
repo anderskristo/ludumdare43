@@ -119,8 +119,11 @@ export default class GameScene extends Phaser.Scene {
     {
         console.log('collision',player.color,enemy.color);
         if (player.color === enemy.color) {
+            var colorIndex = Math.round(Math.random() * (self.colors.length-1));
             enemy.destroy();
             self.moveSpeed += self.speedIncrement;
+            player.setColor(self.colors[colorIndex]);
+            console.log(player.color);
         } else {
             player.alive = false
             enemy.x += 20
