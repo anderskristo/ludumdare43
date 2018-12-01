@@ -20,7 +20,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     jump() {
-        this.body.setVelocityY(-350);
+        this.body.setVelocityY(-450);
         this.jumpSound.play();
     }
 

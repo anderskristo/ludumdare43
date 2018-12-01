@@ -15,6 +15,7 @@ export default class GameScene extends Phaser.Scene {
         this.cursors;
         this.groundLayer;
         this.coinLayer;
+        this.enemiesLayer;
         this.text;
         this.score = 0;
         this.moveSpeed = 10;
@@ -27,6 +28,10 @@ export default class GameScene extends Phaser.Scene {
         // var coinTiles = this.map.addTilesetImage('coin');
         // // add coins as tiles
         // this.coinLayer = this.map.createDynamicLayer('Coins', coinTiles, 0, 0);
+        this.enemiesLayer = this.physics.add.group(null);
+        this.enemiesLayer.runChildUpdate = true;
+        //var enemyTiles = this.map.addTilesetImage('enemy');
+        //this.enemiesLayer = this.map.createDynamicLayer('Enemies', enemyTiles, 0, 0);
 
         this.createTiledMap();
         this.createPlayer();
@@ -58,6 +63,8 @@ export default class GameScene extends Phaser.Scene {
     initPhysics() {
         console.log(this.player, this.groundLayer)
         this.physics.add.collider(this.player, this.groundLayer);
+        this.physics.add.collider(this.enemiesLayer, this.groundLayer);
+        this.physics.add.collider(this.player, this.enemiesLayer, this.onCollision);
     }
 
     createPlayer() {
@@ -81,13 +88,23 @@ export default class GameScene extends Phaser.Scene {
             y: spawnY
         });
 
-        this.physics.add.collider(this.player, enemy);
         this.enemies.push(enemy);
+        this.enemiesLayer.add(enemy);
     }
 
     // this function will be called when the player touches a coin
     collectCoin(sprite, tile) {
 
+    }
+
+    onCollision(player, enemy)
+    {
+        console.log('collision',player,enemy);
+        if (player.color === enemy.color) {
+            console.log('Add score')
+        } else {
+            console.log('DIE')
+        }
     }
 
     update(time, delta) {
@@ -96,8 +113,6 @@ export default class GameScene extends Phaser.Scene {
         var moveSpeed = this.moveSpeed;
         var enemies = this.enemies;
         this.groundLayer.x -= moveSpeed;
-        //var firstElems = this.groundLayer.culledTiles[0].layer.data[0].slice(0, 10);
-        //this.groundLayer.culledTiles[0].layer.data[0].push(firstElems);
 
         // Endless scrolling fugly hack
         if (this.groundLayer.x < -this.map.widthInPixels / 2) {
