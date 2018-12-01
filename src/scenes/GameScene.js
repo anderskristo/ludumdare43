@@ -19,8 +19,10 @@ export default class GameScene extends Phaser.Scene {
         this.text;
         this.score = 0;
         this.moveSpeed = 10;
-        this.colors = ['green', 'blue', 'yellow', 'red'];
+        this.colors = ['0x00ff00', '0x0000ff', '0xffff00', '0xff0000'];
         this.startColor = this.colors[0];
+        this.enemySpawnChance = 0.01;
+        this.enemySpawnChanceIncreasingFactor = 0.01;
     }
 
     create() {
@@ -72,15 +74,16 @@ export default class GameScene extends Phaser.Scene {
             scene: this,
             x: 72,
             y: 430,
-            color: 'green'
+            color: this.colors[0]
         });
     }
 
     createEnemy() {
-        var spawnX = this.groundLayer.x + 800;
+        var spawnX = 800;
         var spawnY = 450;
-        var color = Math.round(Math.random() * this.colors.length);
         console.log('colorindex', color)
+        var color = Math.round(Math.random() * (this.colors.length - 1));
+
         if (Math.random() < 0.5) {
             spawnY -= this.player.height;
         }
@@ -130,7 +133,12 @@ export default class GameScene extends Phaser.Scene {
         console.log('collision', player.color, enemy.color);
         if (player.color === enemy.color) {
             console.log('Add score', console.log(this.score))
-            this.addScore(50);
+            //this.addScore(50);
+
+            enemy.destroy();
+            this.enemySpawnChance += this.enemySpawnChanceIncreasingFactor;
+            this.moveSpeed += this.enemySpawnChanceIncreasingFactor;
+            console.log('Increased difficulty. Spawnchance', this.enemySpawnChance)
         } else {
             player.alive = false
             enemy.x += 20
@@ -165,6 +173,9 @@ export default class GameScene extends Phaser.Scene {
         // Endless scrolling fugly hack
         if (this.groundLayer.x < -this.map.widthInPixels / 2) {
             this.groundLayer.x = 0;
+        }
+
+        if (this.player.alive && Math.random() < this.enemySpawnChance) {
             this.createEnemy();
         }
 
