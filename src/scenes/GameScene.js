@@ -1,6 +1,7 @@
 import 'phaser';
 
 import Player from '../sprites/player';
+import Enemy from '../sprites/enemy';
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -10,6 +11,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.map;
         this.player;
+        this.enemies = [];
         this.cursors;
         this.groundLayer;
         this.coinLayer;
@@ -67,6 +69,17 @@ export default class GameScene extends Phaser.Scene {
         });
     }
 
+    createEnemy() {
+        console.log('Spawning enemy at',this.groundLayer.x+800, 40);
+        this.enemies.push(
+            new Enemy({
+                scene: this,
+                x: this.groundLayer.x+800,
+                y: 40
+            })
+        );
+    }
+
     // this function will be called when the player touches a coin
     collectCoin(sprite, tile) {
 
@@ -77,16 +90,28 @@ export default class GameScene extends Phaser.Scene {
         this.player.update(time, delta);
 
         if (this.cursors.right.isDown) {
-            this.groundLayer.x = this.groundLayer.x - this.moveSpeed;
+            var moveSpeed = this.moveSpeed;
+            var enemies = this.enemies;
+            this.groundLayer.x = this.groundLayer.x - moveSpeed;
             //var firstElems = this.groundLayer.culledTiles[0].layer.data[0].slice(0, 10);
             //this.groundLayer.culledTiles[0].layer.data[0].push(firstElems);
 
+            // Endless scrolling fugly hack
             if (this.groundLayer.x < -this.map.widthInPixels / 2) {
                 this.groundLayer.x = 0;
+                this.createEnemy();
             }
+
+            enemies.forEach(function(enemy, index) {
+                enemy.x -= moveSpeed;
+                if (enemy.x < -50) {
+                    enemy.destroy();
+                    enemies.splice(index, 1);
+                }
+            })
         }
         else if (this.cursors.left.isDown) {
-            this.groundLayer.x = this.groundLayer.x + this.moveSpeed;
+            this.groundLayer.x = this.groundLayer.x + moveSpeed;
         }
     }
 }
