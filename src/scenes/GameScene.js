@@ -17,7 +17,7 @@ export default class GameScene extends Phaser.Scene {
         this.coinLayer;
         this.text;
         this.score = 0;
-        this.moveSpeed = 20;
+        this.moveSpeed = 10;
     }
 
     create() {
@@ -74,7 +74,7 @@ export default class GameScene extends Phaser.Scene {
         if (Math.random() < 0.5) {
             spawnY -= this.player.height;
         }
-        console.log('Spawning enemy at',spawnX, spawnY);
+ 
         var enemy = new Enemy({
             scene: this,
             x: spawnX,
@@ -105,7 +105,7 @@ export default class GameScene extends Phaser.Scene {
             this.createEnemy();
         }
 
-        enemies.forEach(function(enemy, index) {
+        enemies.forEach(function (enemy, index) {
             enemy.x -= moveSpeed;
             if (enemy.x < -50) {
                 enemy.destroy();
