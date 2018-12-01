@@ -19,7 +19,7 @@ export default class GameScene extends Phaser.Scene {
         this.text;
         this.score = 0;
         this.moveSpeed = 10;
-        this.colors = ['green','blue','yellow','red'];
+        this.colors = ['0x00ff00','0x0000ff','0xffff00','0xff0000'];
         this.startColor = this.colors[0];
     }
 
@@ -71,15 +71,15 @@ export default class GameScene extends Phaser.Scene {
             scene: this,
             x: 72,
             y: 430,
-            color: 'green'
+            color: this.colors[0]
         });
     }
 
     createEnemy() {
         var spawnX = this.groundLayer.x + 800;
         var spawnY = 450;
-        var color = Math.round(Math.random() * this.colors.length);
-        console.log('colorindex',color)
+        var color = Math.round(Math.random() * (this.colors.length-1));
+
         if (Math.random() < 0.5) {
             spawnY -= this.player.height;
         }
@@ -109,6 +109,7 @@ export default class GameScene extends Phaser.Scene {
         console.log('collision',player.color,enemy.color);
         if (player.color === enemy.color) {
             console.log('Add score')
+            enemy.destroy();
         } else {
             player.alive = false
             enemy.x += 20
