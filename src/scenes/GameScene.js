@@ -19,10 +19,14 @@ export default class GameScene extends Phaser.Scene {
         this.text;
         this.score = 0;
         this.moveSpeed = 10;
+        this.speedIncrement = 1;
         this.colors = ['0x00ff00','0x0000ff','0xffff00','0xff0000'];
         this.startColor = this.colors[0];
-        this.enemySpawnChance = 0.01;
-        this.enemySpawnChanceIncreasingFactor = 0.01;
+        this.enemySpawnMinTime = 1000;
+        this.enemySpawnMaxTime = 2000;
+        this.enemyIsSpawning = false;
+        
+        var self;
     }
 
     create() {
@@ -37,6 +41,8 @@ export default class GameScene extends Phaser.Scene {
         this.createPlayer();
         this.initPhysics();
         this.loadMusic();
+
+        self = this;
     }
 
     createTiledMap() {
@@ -113,11 +119,8 @@ export default class GameScene extends Phaser.Scene {
     {
         console.log('collision',player.color,enemy.color);
         if (player.color === enemy.color) {
-            console.log('Add score')
             enemy.destroy();
-            this.enemySpawnChance += this.enemySpawnChanceIncreasingFactor;
-            this.moveSpeed += this.enemySpawnChanceIncreasingFactor;
-            console.log('Increased difficulty. Spawnchance',this.enemySpawnChance)
+            self.moveSpeed += self.speedIncrement;
         } else {
             player.alive = false
             enemy.x += 20
@@ -152,10 +155,16 @@ export default class GameScene extends Phaser.Scene {
             this.groundLayer.x = 0;
         }
 
-        if (this.player.alive && Math.random() < this.enemySpawnChance) {
-            this.createEnemy();
+        if (this.player.alive && !this.enemyIsSpawning) {
+            var self = this;
+            this.enemyIsSpawning = true;
+            var spawnDelay = Math.random() * (this.enemySpawnMaxTime - this.enemySpawnMinTime) + this.enemySpawnMinTime;
+            setTimeout(function() {
+                self.enemyIsSpawning = false;
+                self.createEnemy();    
+            }, spawnDelay);
         }
-
+        
         enemies.forEach(function (enemy, index) {
             enemy.x -= moveSpeed;
             if (enemy.x < -50) {
