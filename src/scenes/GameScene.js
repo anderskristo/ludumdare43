@@ -18,11 +18,15 @@ export default class GameScene extends Phaser.Scene {
         console.log('Game Scene');
         var logo = this.add.image(400, 150, 'logo');
 
-        this.loadDogSound('./assets/music/song.mp3');
+        //this.loadDogSound('./assets/music/song.mp3');
+
+        this.music = this.sound.add('confused');
+        this.music.play();
     }
 
     update() {
-        game.analyser.fftSize = 2048;
+        console.log(this.music);
+        game.analyser.fftSize = 256;
         var bufferLength = game.analyser.frequencyBinCount;
         var dataArray = new Uint8Array(bufferLength);
         game.analyser.getByteTimeDomainData(dataArray);
