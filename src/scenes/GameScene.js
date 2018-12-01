@@ -87,8 +87,8 @@ export default class GameScene extends Phaser.Scene {
     createEnemy() {
         var spawnX = 800;
         var spawnY = 450;
-        console.log('colorindex', color)
         var color = Math.round(Math.random() * (this.colors.length - 1));
+        console.log('colorindex', color)
 
         if (Math.random() < 0.5) {
             spawnY -= this.player.height;
@@ -138,8 +138,11 @@ export default class GameScene extends Phaser.Scene {
     onCollision(player, enemy) {
         console.log('collision', player.color, enemy.color);
         if (player.color === enemy.color) {
+            var colorIndex = Math.round(Math.random() * (self.colors.length - 1));
             enemy.destroy();
             self.moveSpeed += self.speedIncrement;
+            player.setColor(self.colors[colorIndex]);
+            console.log(player.color);
         } else {
             player.alive = false
             enemy.x += 20
