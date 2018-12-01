@@ -44,8 +44,8 @@
             },
             {
                 "type": "audio",
-                "key": "confused",
-                "url": "assets/music/Confused.mp3"
+                "key": "trance",
+                "url": "assets/music/trance.mp3"
             }
 
         ]

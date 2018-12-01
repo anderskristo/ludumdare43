@@ -18,6 +18,7 @@ export default class GameScene extends Phaser.Scene {
         this.text;
         this.score = 0;
         this.moveSpeed = 10;
+        this.startColor = 'green';
     }
 
     create() {
@@ -26,6 +27,7 @@ export default class GameScene extends Phaser.Scene {
         this.createTiledMap();
         this.createPlayer();
         this.initPhysics();
+        this.loadMusic();
     }
 
     createTiledMap() {
@@ -59,17 +61,18 @@ export default class GameScene extends Phaser.Scene {
         this.player = new Player({
             scene: this,
             x: 72,
-            y: 430
+            y: 430,
+            color: 'green'
         });
     }
 
     createEnemy() {
-        var spawnX = this.groundLayer.x+800;
+        var spawnX = this.groundLayer.x + 800;
         var spawnY = 450;
         if (Math.random() < 0.5) {
             spawnY -= this.player.height;
         }
- 
+
         var enemy = new Enemy({
             scene: this,
             x: spawnX,
@@ -80,6 +83,10 @@ export default class GameScene extends Phaser.Scene {
         this.enemies.push(enemy);
     }
 
+    loadMusic() {
+
+    }
+
     // this function will be called when the player touches a coin
     collectCoin(sprite, tile) {
 
@@ -88,11 +95,23 @@ export default class GameScene extends Phaser.Scene {
     gameOver() {
         this.moveSpeed = 0;
         this.gameOverText = this.add.text(16, 200, 'You are dead.\nScore: ' + this.score, { fontSize: '32px', fill: '#000' });
+
+        this.score = 0;
+        this.player.color = 'green';
+
+        var self = this;
+        var playButton = this.add.image(400, 120, "playButton").setInteractive();
+
+        playButton.on("pointerdown", function (e) {
+            self.scene.restart('GameScene');
+        });
     }
 
     update(time, delta) {
         // The player class update method must be called each cycle as the class is not currently part of a group
         this.player.update(time, delta);
+
+        console.log(this.player.color)
 
         var moveSpeed = this.moveSpeed;
         var enemies = this.enemies;
@@ -117,6 +136,7 @@ export default class GameScene extends Phaser.Scene {
         /**
          * If Player dies, kill the game.
          */
+        //this.player.alive = false;
         if (this.player.alive === false) {
             this.gameOver();
         }
