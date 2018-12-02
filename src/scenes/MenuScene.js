@@ -25,6 +25,8 @@ export default class MenuScene extends Phaser.Scene {
         this.createPlayer();
         this.initPhysics();
 
+        this.player.anims.play('left', true);
+
         this.instructions = this.add.text(16, 200, 'Avoid blocks.\nSacrifice humans to\nthe Bacon king The Notorious P.I.G', { fontSize: '32px', fill: '#000' });
 
         this.scene.add('GameScene', GameScene);

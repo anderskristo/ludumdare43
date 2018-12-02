@@ -19,7 +19,7 @@ export default class GameScene extends Phaser.Scene {
         this.text;
         this.score = 0;
         this.moveSpeed = 10;
-        this.colors = ['0x00ff00','0x0000ff','0xffff00','0xff0000'];
+        this.colors = ['0x00ff00', '0x0000ff', '0xffff00', '0xff0000'];
         this.startColor = this.colors[0];
         this.enemySpawnChance = 0.01;
         this.enemySpawnChanceIncreasingFactor = 0.01;
@@ -37,6 +37,8 @@ export default class GameScene extends Phaser.Scene {
         this.createPlayer();
         this.initPhysics();
         this.loadMusic();
+
+        this.player.anims.play('left', true);
     }
 
     createTiledMap() {
@@ -54,7 +56,7 @@ export default class GameScene extends Phaser.Scene {
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
 
-        this.cameras.main.setBackgroundColor(0xffc0cb);
+        this.cameras.main.setBackgroundColor(0x000000);
     }
 
     /**
@@ -80,7 +82,7 @@ export default class GameScene extends Phaser.Scene {
     createEnemy() {
         var spawnX = 800;
         var spawnY = 450;
-        var color = Math.round(Math.random() * (this.colors.length-1));
+        var color = Math.round(Math.random() * (this.colors.length - 1));
 
         if (Math.random() < 0.5) {
             spawnY -= this.player.height;
@@ -109,15 +111,14 @@ export default class GameScene extends Phaser.Scene {
 
     }
 
-    onCollision(player, enemy)
-    {
-        console.log('collision',player.color,enemy.color);
+    onCollision(player, enemy) {
+        console.log('collision', player.color, enemy.color);
         if (player.color === enemy.color) {
             console.log('Add score')
             enemy.destroy();
             this.enemySpawnChance += this.enemySpawnChanceIncreasingFactor;
             this.moveSpeed += this.enemySpawnChanceIncreasingFactor;
-            console.log('Increased difficulty. Spawnchance',this.enemySpawnChance)
+            console.log('Increased difficulty. Spawnchance', this.enemySpawnChance)
         } else {
             player.alive = false
             enemy.x += 20
