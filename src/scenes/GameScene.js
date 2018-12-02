@@ -19,17 +19,17 @@ export default class GameScene extends Phaser.Scene {
         this.text;
         this.score = 0;
         this.moveSpeed = 10;
+        this.speedIncrement = 1;
         this.colors = ['0x00ff00', '0x0000ff', '0xffff00', '0xff0000'];
         this.startColor = this.colors[0];
-        this.enemySpawnChance = 0.01;
-        this.enemySpawnChanceIncreasingFactor = 0.01;
+        this.enemySpawnMinTime = 1000;
+        this.enemySpawnMaxTime = 2000;
+        this.enemyIsSpawning = false;
+
+        var self;
     }
 
     create() {
-        // coin image used as tileset
-        // var coinTiles = this.map.addTilesetImage('coin');
-        // // add coins as tiles
-        // this.coinLayer = this.map.createDynamicLayer('Coins', coinTiles, 0, 0);
         this.enemiesLayer = this.physics.add.group(null);
         this.enemiesLayer.runChildUpdate = true;
 
@@ -37,13 +37,17 @@ export default class GameScene extends Phaser.Scene {
         this.createPlayer();
         this.initPhysics();
         this.loadMusic();
+        this.scoreHud();
+        self = this;
 
         this.player.anims.play('left', true);
     }
 
     createTiledMap() {
         // load the map 
-        this.map = this.make.tilemap({ key: 'map' });
+        this.map = this.make.tilemap({
+            key: 'map'
+        });
 
         // tiles for the ground layer
         var groundTiles = this.map.addTilesetImage('tiles');
@@ -81,8 +85,9 @@ export default class GameScene extends Phaser.Scene {
 
     createEnemy() {
         var spawnX = 800;
-        var spawnY = 450;
+        var spawnY = 460;
         var color = Math.round(Math.random() * (this.colors.length - 1));
+        console.log('colorindex', color)
 
         if (Math.random() < 0.5) {
             spawnY -= this.player.height;
@@ -103,7 +108,7 @@ export default class GameScene extends Phaser.Scene {
         this.music = this.sound.add('trance');
         this.music.setLoop(true);
         this.music.play();
-        this.music.setVolume(.5);
+        this.music.setVolume(.1);
     }
 
     // this function will be called when the player touches a coin
@@ -111,14 +116,32 @@ export default class GameScene extends Phaser.Scene {
 
     }
 
+    addScore(value) {
+        this.score += value;
+        this.scoreText.setText(this.score)
+    }
+
+    scoreHud() {
+        this.scoreText = this.add.text(16, 200, this.score, {
+            fontFamily: 'sans-serif',
+            color: '#00000040',
+            align: 'center',
+            fontSize: 102,
+            fontStyle: 'bold',
+            padding: 0,
+        });
+
+        this.scoreText.setPosition(game.canvas.width / 2 - this.scoreText.width, 100);
+    }
+
     onCollision(player, enemy) {
         console.log('collision', player.color, enemy.color);
         if (player.color === enemy.color) {
-            console.log('Add score')
+            var colorIndex = Math.round(Math.random() * (self.colors.length - 1));
             enemy.destroy();
-            this.enemySpawnChance += this.enemySpawnChanceIncreasingFactor;
-            this.moveSpeed += this.enemySpawnChanceIncreasingFactor;
-            console.log('Increased difficulty. Spawnchance', this.enemySpawnChance)
+            self.moveSpeed += self.speedIncrement;
+            player.setColor(self.colors[colorIndex]);
+            console.log(player.color);
         } else {
             player.alive = false
             enemy.x += 20
@@ -127,7 +150,10 @@ export default class GameScene extends Phaser.Scene {
 
     gameOver() {
         this.moveSpeed = 0;
-        this.gameOverText = this.add.text(16, 200, 'You are dead.\nScore: ' + this.score, { fontSize: '32px', fill: '#000' });
+        this.gameOverText = this.add.text(16, 200, 'You are dead.\nScore: ' + this.score, {
+            fontSize: '32px',
+            fill: '#000'
+        });
 
         this.score = 0;
         this.player.color = 'green';
@@ -136,13 +162,15 @@ export default class GameScene extends Phaser.Scene {
         var playButton = this.add.image(400, 120, "playButton").setInteractive();
 
         playButton.on("pointerdown", function (e) {
-            self.scene.restart('GameScene');
+            //self.scene.restart('GameScene');
+            self.scene.start('GameScene');
         });
     }
 
     update(time, delta) {
         // The player class update method must be called each cycle as the class is not currently part of a group
         this.player.update(time, delta);
+        this.addScore(1);
 
         var moveSpeed = this.moveSpeed;
         var enemies = this.enemies;
@@ -153,8 +181,14 @@ export default class GameScene extends Phaser.Scene {
             this.groundLayer.x = 0;
         }
 
-        if (this.player.alive && Math.random() < this.enemySpawnChance) {
-            this.createEnemy();
+        if (this.player.alive && !this.enemyIsSpawning) {
+            var self = this;
+            this.enemyIsSpawning = true;
+            var spawnDelay = Math.random() * (this.enemySpawnMaxTime - this.enemySpawnMinTime) + this.enemySpawnMinTime;
+            setTimeout(function () {
+                self.enemyIsSpawning = false;
+                self.createEnemy();
+            }, spawnDelay);
         }
 
         enemies.forEach(function (enemy, index) {
