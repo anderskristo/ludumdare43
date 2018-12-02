@@ -56,6 +56,11 @@
                 "type": "image",
                 "key": "introImage",
                 "url": "assets/intro.png"
+            },            
+            {
+                "type": "audio",
+                "key": "pickupSound",
+                "url": "assets/sfx/gas_pickup.wav"
             },
             {
                 "type": "audio",

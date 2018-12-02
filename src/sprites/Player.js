@@ -18,9 +18,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         this.jumpSound = this.scene.sound.add('jumpSound');
         this.jumpSound.setVolume(0.1)
+        this.pickupSound = this.scene.sound.add('pickupSound');
+        this.pickupSound.setVolume(0.5)
 
         this.scene.add.existing(this);
-        this.setColor(Config.color);
+        this.color = Config.color;
+        this.setTint(this.color);
 
         var self = this;
 
@@ -41,6 +44,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     setColor(newColor) {
         this.color = newColor;
         this.setTint(this.color);
+        this.pickupSound.play();
     }
 
     update(time, delta) {
