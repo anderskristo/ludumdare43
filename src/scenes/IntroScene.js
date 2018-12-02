@@ -1,5 +1,6 @@
 import 'phaser';
 
+import Config from '../config/config';
 import MenuScene from './MenuScene';
 
 export default class IntroScene extends Phaser.Scene {
@@ -17,7 +18,7 @@ export default class IntroScene extends Phaser.Scene {
 
         var self = this;
 
-        var introScene = this.add.image(400, 300, "introImage").setInteractive();
+        var introScene = this.add.image(Config.width/2, Config.height/2, "introImage").setInteractive();
         introScene.setDisplaySize(600,600);
 
         introScene.on("pointerdown", function (e) {

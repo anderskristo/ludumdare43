@@ -1,5 +1,6 @@
 import 'phaser';
 
+import Config from '../config/config';
 import Player from '../sprites/player';
 import Enemy from '../sprites/enemy';
 
@@ -51,8 +52,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createScrollBg() {
-        this.background.back = this.add.tileSprite(0, 0, 800, 600, 'bg-back').setOrigin(0, 0);
-        this.background.middle = this.add.tileSprite(0, 0, 800, 600, 'bg-middle').setOrigin(0, 0);
+        this.background.back = this.add.tileSprite(0, 0, Config.width, Config.height, 'bg-back').setOrigin(0, 0);
+        this.background.middle = this.add.tileSprite(0, 0, Config.width, Config.height, 'bg-middle').setOrigin(0, 0);
     }
 
     setSpriteColor(color) {
@@ -100,11 +101,10 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createEnemy() {
-        var spawnX = 800 + 35; // canvas width + half of sprite width
+        var spawnX = Config.width + 35; // canvas width + half of sprite width
         var spawnY = 450 + 10; // adjusted Y position. Magic number indeed. Calibrated though
 
         var color = Math.round(Math.random() * (this.colors.length - 1));
-        console.log('colorindex', color)
 
         if (Math.random() < 0.5) {
             //spawnY -= this.player.height;
@@ -147,13 +147,11 @@ export default class GameScene extends Phaser.Scene {
     }
 
     onCollision(player, enemy) {
-        console.log('collision', player.color, enemy.color);
         if (player.color === enemy.color) {
             var colorIndex = Math.round(Math.random() * (self.colors.length - 1));
             enemy.destroy();
             self.moveSpeed += self.speedIncrement;
             player.setColor(self.colors[colorIndex]);
-            console.log(player.color);
         } else {
             player.alive = false
             enemy.x += 20

@@ -12,6 +12,5 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.body.setGravityY(0);
 
         this.scene.add.existing(this);
-        console.log(this.color);
     }
 }
