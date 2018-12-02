@@ -100,7 +100,7 @@ export default class GameScene extends Phaser.Scene {
     createPlayer() {
         this.player = new Player({
             scene: this,
-            x: 72,
+            x: 200,
             y: 430,
             color: this.colors[0]
         });
