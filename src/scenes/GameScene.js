@@ -23,7 +23,7 @@ export default class GameScene extends Phaser.Scene {
         this.score = 0;
         this.moveSpeed = 0.7;
         this.speedIncrement = 0.05;
-        this.colors = ['0x39ff14', '0x2cc3ff', '0xffff00', '0xff0000'];
+        this.colors = ['0x83ffc1', '0x2cc3ff', '0xffff00', '0xff0000'];
         this.maxHp = 100;
         this.hp = 100;
 
@@ -64,6 +64,7 @@ export default class GameScene extends Phaser.Scene {
 
     setSpriteColor(color) {
         this.background.middle.setTint(color);
+        this.background.fore.setTint(color);
     }
 
     createTiledMap() {
