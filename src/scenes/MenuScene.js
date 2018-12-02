@@ -25,6 +25,8 @@ export default class MenuScene extends Phaser.Scene {
         this.createPlayer();
         this.initPhysics();
 
+        this.player.anims.play('left', true);
+
         this.instructions = this.add.text(16, 200, 'Avoid blocks.\nSacrifice humans to\nthe Bacon king The Notorious P.I.G', { fontSize: '32px', fill: '#000' });
 
         this.scene.add('GameScene', GameScene);
@@ -44,7 +46,7 @@ export default class MenuScene extends Phaser.Scene {
         this.groundLayer.setCollisionByExclusion([-1]);
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
-        this.cameras.main.setBackgroundColor(0xffc0cb);
+        this.cameras.main.setBackgroundColor(0x000000);
         this.cursors = this.input.keyboard.createCursorKeys();
     }
 
