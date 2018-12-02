@@ -61,6 +61,8 @@ export default class GameScene extends Phaser.Scene {
 
         self = this;
         this.player.anims.play('left', true);
+        this.playerAnimSpeedScale = 2;
+        this.player.anims.setTimeScale(this.playerAnimSpeedScale + this.moveSpeed);
 
         this.emitterConfig = {
             name: 'sparks',
@@ -207,6 +209,7 @@ export default class GameScene extends Phaser.Scene {
                 console.log('Removed pickup', enemy.x);
                 enemy.destroy();
                 self.moveSpeed += self.speedIncrement;
+                player.anims.setTimeScale(self.playerAnimSpeedScale + self.moveSpeed);
                 player.setColor(self.colors[colorIndex]);
             } else {
                 if (player.alive) {
