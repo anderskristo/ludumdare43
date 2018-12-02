@@ -46,7 +46,7 @@ export default class MenuScene extends Phaser.Scene {
         this.groundLayer.setCollisionByExclusion([-1]);
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
-        this.cameras.main.setBackgroundColor(0xffc0cb);
+        this.cameras.main.setBackgroundColor(0x000000);
         this.cursors = this.input.keyboard.createCursorKeys();
     }
 
