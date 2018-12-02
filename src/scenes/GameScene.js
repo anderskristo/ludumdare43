@@ -2,6 +2,7 @@ import 'phaser';
 
 import Player from '../sprites/player';
 import Enemy from '../sprites/enemy';
+import Health from '../sprites/health';
 
 export default class GameScene extends Phaser.Scene {
     constructor() {
@@ -39,6 +40,7 @@ export default class GameScene extends Phaser.Scene {
         this.createScrollBg();
         this.createTiledMap();
         this.createPlayer();
+        this.createHealth();
         this.initPhysics();
         this.loadMusic();
         this.scoreHud();
@@ -94,6 +96,15 @@ export default class GameScene extends Phaser.Scene {
             scene: this,
             x: 72,
             y: 430,
+            color: this.colors[0]
+        });
+    }
+
+    createHealth() {
+        this.health = new Health({
+            scene: this,
+            x: 0,
+            y: 0,
             color: this.colors[0]
         });
     }
