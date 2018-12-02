@@ -26,6 +26,9 @@ export default class GameScene extends Phaser.Scene {
         this.colors = ['0x83ffc1', '0x2cc3ff', '0xffff00', '0xff0000'];
         this.maxHp = 100;
         this.hp = 100;
+        this.key;
+        this.isGameOver = false;
+        this.restartButton;
 
         this.startColor = this.colors[0];
         this.enemySpawnMinTime = 1000;
@@ -49,13 +52,19 @@ export default class GameScene extends Phaser.Scene {
         this.createPlayer();
         this.createHealth();
         this.initPhysics();
-        this.loadMusic();
+        if (!this.music) {
+            this.loadMusic();
+        } else {
+            this.music.play();
+        }
         this.createHud();
         this.setSpriteColor(this.color);
 
         self = this;
 
         this.player.anims.play('left', true);
+
+        this.key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
        
         this.emitterConfig = {
             name: 'sparks',
@@ -206,29 +215,41 @@ export default class GameScene extends Phaser.Scene {
     }
 
     gameOver() {
-        this.gameOverText = this.add.text(16, 200, 'You are dead.', {
-            fontSize: '32px',
-            fill: '#fff'
-        });
+        if (!this.isGameOver) {
+            this.gameOverText = this.add.text(16, 200, 'You are dead.', {
+                fontSize: '32px',
+                fill: '#fff'
+            });
 
-        this.music.stop();
-        this.score = 0;
-        this.player.anims.stop('left', true);
+            this.music.stop();
+            this.score = 0;
+            this.player.anims.stop('left', true);
 
-        // Death animation
-        this.tweens.add({
-            targets: this.player,
-            x: 300,
-            alpha: 0,
-            ease: 'Power1',
-            duration: 1000,
-            delay: 0
-        });
+            // Death animation
+            this.tweens.add({
+                targets: this.player,
+                x: 300,
+                alpha: 0,
+                ease: 'Power1',
+                duration: 1000,
+                delay: 0
+            });
 
-        var playButton = this.add.image(400, 120, "playButton").setInteractive();
-        playButton.on("pointerdown", function (e) {
+            this.restartButton = this.add.image(400, 120, "playButton").setInteractive();
+
+            this.isGameOver = true;
+        }
+
+        if (this.key.isDown) {
             self.scene.restart('GameScene');
             self.hp = self.maxHp;
+            this.isGameOver = false;
+        }
+
+        this.restartButton.on("pointerdown", function (e) {
+            self.scene.restart('GameScene');
+            self.hp = self.maxHp;
+            self.isGameOver = false;
         });
     }
 
