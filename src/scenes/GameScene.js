@@ -30,10 +30,6 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
-        // coin image used as tileset
-        // var coinTiles = this.map.addTilesetImage('coin');
-        // // add coins as tiles
-        // this.coinLayer = this.map.createDynamicLayer('Coins', coinTiles, 0, 0);
         this.enemiesLayer = this.physics.add.group(null);
         this.enemiesLayer.runChildUpdate = true;
 
@@ -112,7 +108,7 @@ export default class GameScene extends Phaser.Scene {
         this.music = this.sound.add('trance');
         this.music.setLoop(true);
         this.music.play();
-        this.music.setVolume(.5);
+        this.music.setVolume(.1);
     }
 
     // this function will be called when the player touches a coin

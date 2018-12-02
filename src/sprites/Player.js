@@ -17,6 +17,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         });
 
         this.jumpSound = this.scene.sound.add('jumpSound');
+        this.jumpSound.setVolume(0.1)
 
         console.log(this.color);
         this.scene.add.existing(this);
