@@ -64,6 +64,11 @@
             },
             {
                 "type": "audio",
+                "key": "deadSound",
+                "url": "assets/sfx/deadSound.mp3"
+            },
+            {
+                "type": "audio",
                 "key": "jumpSound",
                 "url": "assets/sfx/jump.wav"
             },

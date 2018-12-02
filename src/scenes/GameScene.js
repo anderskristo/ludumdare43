@@ -169,7 +169,10 @@ export default class GameScene extends Phaser.Scene {
             self.moveSpeed += self.speedIncrement;
             player.setColor(self.colors[colorIndex]);
         } else {
-            player.alive = false
+            if (player.alive) {
+                player.alive = false
+                player.dead();
+            }
             self.gameOver();
         }
     }
