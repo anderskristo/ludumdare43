@@ -15,6 +15,7 @@ export default class MenuScene extends Phaser.Scene {
         this.initPlayerUpdateDelay = 300;
         this.playerUpdateDelay = 0;
         this.groundLayer;
+        this.foreground;
         this.instructions;
 
     }
@@ -23,10 +24,12 @@ export default class MenuScene extends Phaser.Scene {
         this.createTiledMap();
         this.createPlayer();
         this.initPhysics();
+        this.createBg();
+
 
         this.player.anims.play('left', true);
 
-        this.instructions = this.add.text(40, 200, 'Collect blocks of the same color\nor your gas will run out!\nAvoid blocks in other colors.', { fontSize: '32px', fill: '#39ff14' });
+        this.instructions = this.add.text(40, 200, 'Collect blocks of the same color\nor your gas will run out!\nAvoid blocks in other colors.', { fontSize: '32px', fill: '#83ffc1' });
         this.key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.scene.add('GameScene', GameScene);
@@ -39,10 +42,15 @@ export default class MenuScene extends Phaser.Scene {
         });
     }
 
+    createBg() {
+        this.foreground = this.add.tileSprite(0, 0, Config.width, Config.height, 'bg-fore').setOrigin(0, 0);
+        this.foreground.setTint(0x83ffc1);
+    }
+
     createTiledMap() {
         this.map = this.make.tilemap({ key: 'map' });
         var groundTiles = this.map.addTilesetImage('tiles');
-        this.groundLayer = this.map.createDynamicLayer('World', groundTiles, 0, 0);
+        this.groundLayer = this.map.createDynamicLayer('World', groundTiles, 0, 35);
         this.groundLayer.setCollisionByExclusion([-1]);
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
@@ -60,7 +68,7 @@ export default class MenuScene extends Phaser.Scene {
             x: 200,
             y: 100
         });
-        this.player.setTint(0x00ff80);
+        this.player.setTint(0x83ffc1);
     }
 
     update(time, delta) {

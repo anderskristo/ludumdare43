@@ -76,6 +76,11 @@
                 "type": "audio",
                 "key": "trance",
                 "url": "assets/music/trance.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "confused",
+                "url": "assets/music/Confused.mp3"
             }
 
         ]
