@@ -42,13 +42,16 @@ export default class GameScene extends Phaser.Scene {
         this.initPhysics();
         this.loadMusic();
         this.scoreHud();
-
         self = this;
+
+        this.player.anims.play('left', true);
     }
 
     createTiledMap() {
         // load the map 
-        this.map = this.make.tilemap({ key: 'map' });
+        this.map = this.make.tilemap({
+            key: 'map'
+        });
 
         // tiles for the ground layer
         var groundTiles = this.map.addTilesetImage('tiles');
@@ -61,7 +64,7 @@ export default class GameScene extends Phaser.Scene {
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
 
-        this.cameras.main.setBackgroundColor(0xffc0cb);
+        this.cameras.main.setBackgroundColor(0x000000);
     }
 
     /**
@@ -86,7 +89,7 @@ export default class GameScene extends Phaser.Scene {
 
     createEnemy() {
         var spawnX = 800;
-        var spawnY = 450;
+        var spawnY = 460;
         var color = Math.round(Math.random() * (this.colors.length - 1));
         console.log('colorindex', color)
 
@@ -151,7 +154,10 @@ export default class GameScene extends Phaser.Scene {
 
     gameOver() {
         this.moveSpeed = 0;
-        this.gameOverText = this.add.text(16, 200, 'You are dead.\nScore: ' + this.score, { fontSize: '32px', fill: '#000' });
+        this.gameOverText = this.add.text(16, 200, 'You are dead.\nScore: ' + this.score, {
+            fontSize: '32px',
+            fill: '#000'
+        });
 
         this.score = 0;
         this.player.color = 'green';
