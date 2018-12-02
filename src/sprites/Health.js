@@ -9,7 +9,7 @@ export default class Health extends Phaser.GameObjects.Shape {
         // this.healthBar.fillStyle(0xffffff, 1);
 
         console.log(this.hp);
-        this.healthText = this.scene.add.text(20, 20, this.hp, {
+        this.healthText = this.scene.add.text(20, 20, 'NEON GAS: ' + this.hp + '%', {
             fontFamily: 'sans-serif',
             color: '#ffffff40',
             align: 'left',

@@ -166,7 +166,6 @@ export default class GameScene extends Phaser.Scene {
             player.setColor(self.colors[colorIndex]);
         } else {
             player.alive = false
-            enemy.x += 20
             self.gameOver();
         }
     }
