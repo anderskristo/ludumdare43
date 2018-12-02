@@ -42,6 +42,7 @@ export default class GameScene extends Phaser.Scene {
         this.initPhysics();
         this.loadMusic();
         this.scoreHud();
+        this.setSpriteColor(this.color);
 
         self = this;
 
@@ -51,6 +52,10 @@ export default class GameScene extends Phaser.Scene {
     createScrollBg() {
         this.background.back = this.add.tileSprite(0, 0, 800, 600, 'bg-back').setOrigin(0, 0);
         this.background.middle = this.add.tileSprite(0, 0, 800, 600, 'bg-middle').setOrigin(0, 0);
+    }
+
+    setSpriteColor(color) {
+        this.background.middle.setTint(color);
     }
 
     createTiledMap() {
@@ -208,6 +213,7 @@ export default class GameScene extends Phaser.Scene {
                 }
             });
 
+            this.setSpriteColor(this.player.color);
         } else {
             this.gameOver();
         }
