@@ -21,8 +21,8 @@ export default class GameScene extends Phaser.Scene {
         this.enemiesLayer;
         this.text;
         this.score = 0;
-        this.moveSpeed;
-        this.speedIncrement = 1;
+        this.moveSpeed = 0.7;
+        this.speedIncrement = 0.05;
         this.colors = ['0x39ff14', '0x2cc3ff', '0xffff00', '0xff0000'];
         this.maxHp = 100;
         this.hp = 100;
@@ -36,10 +36,11 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
+        // Reset this speed when "restarting" game
+        this.moveSpeed = 0.7;
+
         this.enemiesLayer = this.physics.add.group(null);
         this.enemiesLayer.runChildUpdate = true;
-
-        this.moveSpeed = 10;
 
         this.createTiledMap();
         this.createScrollBg();
@@ -144,19 +145,20 @@ export default class GameScene extends Phaser.Scene {
 
     addScore(value) {
         this.score += value;
-        this.scoreText.setText(this.score)
+        this.scoreText.setText(Math.round(this.score))
     }
 
     createHud() {
-        this.scoreText = this.add.text(300, 100, this.score, {
+        this.scoreText = this.add.text(300, 150, this.score, {
             fontFamily: 'sans-serif',
             color: '#ffffff40',
             align: 'center',
-            fontSize: 102,
+            fontSize: 158,
             fontStyle: 'bold',
             padding: 0,
+            width: 300
         });
-        this.scoreText.setPosition(game.canvas.width / 2 - this.scoreText.width, 100);
+        this.scoreText.setPosition(game.canvas.width / 2 - this.scoreText.width, 150);
     }
 
     onCollision(player, enemy) {
@@ -191,13 +193,13 @@ export default class GameScene extends Phaser.Scene {
     update(time, delta) {
         if (this.player.alive && this.health.hp > 0) {
             // Move background tiles
-            this.background.back._tilePosition.x += this.moveSpeed / 6;
-            this.background.middle._tilePosition.x += this.moveSpeed / 3;
-            this.background.fore._tilePosition.x += this.moveSpeed;
+            this.background.back._tilePosition.x += this.moveSpeed / 6 * delta;
+            this.background.middle._tilePosition.x += this.moveSpeed / 3 * delta;
+            this.background.fore._tilePosition.x += this.moveSpeed * delta;
 
             // The player class update method must be called each cycle as the class is not currently part of a group
             this.player.update(time, delta);
-            this.addScore(1);
+            this.addScore(0.05);
 
             var moveSpeed = this.moveSpeed;
             var enemies = this.enemies;
@@ -213,7 +215,7 @@ export default class GameScene extends Phaser.Scene {
             }
 
             enemies.forEach(function (enemy, index) {
-                enemy.x -= moveSpeed;
+                enemy.x -= moveSpeed * delta;
                 if (enemy.x < -50) {
                     self.health.updateHealth(enemy.color);
                     enemy.destroy();
