@@ -22,6 +22,7 @@ export default class GameScene extends Phaser.Scene {
         this.moveSpeed;
         this.speedIncrement = 1;
         this.colors = ['0x39ff14', '0x2cc3ff', '0xffff00', '0xff0000'];
+
         this.startColor = this.colors[0];
         this.enemySpawnMinTime = 1000;
         this.enemySpawnMaxTime = 2000;
@@ -42,6 +43,7 @@ export default class GameScene extends Phaser.Scene {
         this.initPhysics();
         this.loadMusic();
         this.scoreHud();
+        this.setSpriteColor(this.color);
 
         self = this;
 
@@ -49,8 +51,12 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createScrollBg() {
-        this.background.back = this.add.tileSprite(0,0, 800, 600, 'bg-back').setOrigin(0, 0);       
-        this.background.middle = this.add.tileSprite(0,0, 800, 600, 'bg-middle').setOrigin(0, 0);       
+        this.background.back = this.add.tileSprite(0, 0, 800, 600, 'bg-back').setOrigin(0, 0);
+        this.background.middle = this.add.tileSprite(0, 0, 800, 600, 'bg-middle').setOrigin(0, 0);
+    }
+
+    setSpriteColor(color) {
+        this.background.middle.setTint(color);
     }
 
     createTiledMap() {
@@ -174,8 +180,8 @@ export default class GameScene extends Phaser.Scene {
     update(time, delta) {
         if (this.player.alive) {
             // Move background tiles
-            this.background.back._tilePosition.x += this.moveSpeed/6;
-            this.background.middle._tilePosition.x += this.moveSpeed/3;
+            this.background.back._tilePosition.x += this.moveSpeed / 6;
+            this.background.middle._tilePosition.x += this.moveSpeed / 3;
 
             // The player class update method must be called each cycle as the class is not currently part of a group
             this.player.update(time, delta);
@@ -208,6 +214,7 @@ export default class GameScene extends Phaser.Scene {
                 }
             });
 
+            this.setSpriteColor(this.player.color);
         } else {
             this.gameOver();
         }
