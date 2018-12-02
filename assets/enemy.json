@@ -1,1 +1,35 @@
-{"frames":[{"filename":"p1_walk01","frame":{"x":0,"y":0,"w":69,"h":69},"rotated":false,"trimmed":false,"spriteSourceSize":{"x":0,"y":0,"w":69,"h":69},"sourceSize":{"w":69,"h":69}}],"meta":{"app":"https://www.leshylabs.com/apps/sstool/","version":"Leshy SpriteSheet Tool v0.8.4","image":"player.png","size":{"w":69,"h":69},"scale":1}}
+{
+  "frames": [
+    {
+      "filename": "p1_walk01",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 150,
+        "h": 150
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 150,
+        "h": 150
+      },
+      "sourceSize": {
+        "w": 150,
+        "h": 150
+      }
+    }
+  ],
+  "meta": {
+    "app": "with my own two hands",
+    "version": "sunday",
+    "image": "player.png",
+    "size": {
+      "w": 150,
+      "h": 150
+    },
+    "scale": 1
+  }
+}

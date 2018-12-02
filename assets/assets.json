@@ -58,6 +58,21 @@
                 "url": "assets/intro.png"
             },
             {
+                "type": "image",
+                "key": "spark",
+                "url": "assets/spark.png"
+            },            
+            {
+                "type": "audio",
+                "key": "pickupSound",
+                "url": "assets/sfx/gas_pickup.wav"
+            },
+            {
+                "type": "audio",
+                "key": "deadSound",
+                "url": "assets/sfx/deadSound.mp3"
+            },
+            {
                 "type": "audio",
                 "key": "jumpSound",
                 "url": "assets/sfx/jump.wav"
@@ -66,6 +81,11 @@
                 "type": "audio",
                 "key": "trance",
                 "url": "assets/music/trance.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "confused",
+                "url": "assets/music/Confused.mp3"
             }
 
         ]

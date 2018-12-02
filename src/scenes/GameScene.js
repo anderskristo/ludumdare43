@@ -26,10 +26,15 @@ export default class GameScene extends Phaser.Scene {
         this.colors = ['0x83ffc1', '0x2cc3ff', '0xffff00', '0xff0000'];
         this.maxHp = 100;
         this.hp = 100;
+        this.key;
+        this.isGameOver = false;
+        this.restartButton;
         this.startColor = this.colors[0];
         this.enemySpawnMinTime = 1000;
         this.enemySpawnMaxTime = 2000;
         this.enemyIsSpawning = false;
+        this.emitterConfig;
+        this.emitter;
 
         var self;
     }
@@ -46,12 +51,31 @@ export default class GameScene extends Phaser.Scene {
         this.createPlayer();
         this.createHealth();
         this.initPhysics();
-        this.loadMusic();
+        if (!this.music) {
+            this.loadMusic();
+        } else {
+            this.music.play();
+        }
         this.createHud();
         this.setSpriteColor(this.color);
 
         self = this;
         this.player.anims.play('left', true);
+
+        this.emitterConfig = {
+            name: 'sparks',
+            x: 400,
+            y: 300,
+            speed: { min: 150, max: 580 },
+            angle: { min: 220, max: 335 },
+            scale: { start: 1, end: 0.2 },
+            alpha: { start: 0.5, end: 0 },
+            gravityX: 0,
+            gravityY: -300,
+            maxParticles: 100,
+            lifeSpan: 2000,
+            blendMode: 'SCREEN'
+        };
     }
 
     createScrollBg() {
@@ -168,34 +192,74 @@ export default class GameScene extends Phaser.Scene {
     }
 
     onCollision(player, enemy) {
-        if (player.color === enemy.color) {
-            var colorIndex = Math.round(Math.random() * (self.colors.length - 1));
-            console.log('Removed pickup', enemy.x);
-            enemy.destroy();
-            self.enemies.slice(enemy, 1)
+        if (player.alive) {
+            var newEmitterConfig = self.emitterConfig;
+            newEmitterConfig.x = player.x;
+            newEmitterConfig.y = player.y;
+            newEmitterConfig.tint = parseInt(player.color);
+            var newEmitter = self.add.particles('spark').createEmitter(newEmitterConfig);
+            setTimeout(function () {
+                newEmitter.explode();
+            }, 200);
 
-            self.moveSpeed += self.speedIncrement;
-            player.setColor(self.colors[colorIndex]);
-        } else {
-            player.alive = false
-            self.gameOver();
+            if (player.color === enemy.color) {
+                var colorIndex = Math.round(Math.random() * (self.colors.length - 1));
+                console.log('Removed pickup', enemy.x);
+                enemy.destroy();
+                self.moveSpeed += self.speedIncrement;
+                player.setColor(self.colors[colorIndex]);
+            } else {
+                if (player.alive) {
+                    player.alive = false
+                    player.dead();
+                }
+                self.gameOver();
+            }
         }
     }
 
     gameOver() {
-        this.gameOverText = this.add.text(16, 200, 'You are dead.', {
-            fontSize: '32px',
-            fill: '#fff'
-        });
+        if (!this.isGameOver) {
+            this.gameOverText = this.add.text(16, 200, 'You are dead.', {
+                fontSize: '32px',
+                fill: '#fff'
+            });
 
-        this.music.stop();
-        this.score = 0;
-        this.player.anims.stop('left', true);
+            this.music.stop();
+            this.score = 0;
+            this.player.anims.stop('left', true);
 
-        var playButton = this.add.image(400, 120, "playButton").setInteractive();
-        playButton.on("pointerdown", function (e) {
+            // Death animation
+            this.tweens.add({
+                targets: this.player,
+                x: 300,
+                alpha: 0,
+                ease: 'Power1',
+                duration: 1000,
+                delay: 0
+            });
+
+            this.restartButton = this.add.image(400, 120, "playButton").setInteractive();
+
+            this.isGameOver = true;
+
+            // Delay space "listening" to avoid holding space will restart
+            setTimeout(function () {
+                self.key = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+                console.log('key', self.key)
+            }, 500);
+        }
+
+        if (this.key && this.key.isDown) {
             self.scene.restart('GameScene');
             self.hp = self.maxHp;
+            this.isGameOver = false;
+        }
+
+        this.restartButton.on("pointerdown", function (e) {
+            self.scene.restart('GameScene');
+            self.hp = self.maxHp;
+            self.isGameOver = false;
         });
     }
 
