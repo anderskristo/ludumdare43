@@ -117,7 +117,7 @@ export default class GameScene extends Phaser.Scene {
     createPlayer() {
         this.player = new Player({
             scene: this,
-            x: 72,
+            x: 200,
             y: 430,
             color: this.colors[0]
         });
@@ -192,11 +192,14 @@ export default class GameScene extends Phaser.Scene {
 
             if (player.color === enemy.color) {
                 var colorIndex = Math.round(Math.random() * (self.colors.length - 1));
+                enemy.destroy();
                 self.moveSpeed += self.speedIncrement;
                 player.setColor(self.colors[colorIndex]);
-                enemy.destroy();
             } else {
-                player.alive = false
+                if (player.alive) {
+                    player.alive = false
+                    player.dead();
+                }
                 self.gameOver();
             }
         }
@@ -215,7 +218,7 @@ export default class GameScene extends Phaser.Scene {
         // Death animation
         this.tweens.add({
             targets: this.player,
-            x: 200,
+            x: 300,
             alpha: 0,
             ease: 'Power1',
             duration: 1000,

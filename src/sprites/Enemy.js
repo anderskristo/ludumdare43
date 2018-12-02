@@ -10,6 +10,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
         this.body.setBounce(0.8)
         this.body.setGravityY(0);
+        this.body.setSize(70,70);
 
         this.scene.add.existing(this);
     }
