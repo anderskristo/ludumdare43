@@ -26,7 +26,6 @@ export default class GameScene extends Phaser.Scene {
         this.colors = ['0x83ffc1', '0x2cc3ff', '0xffff00', '0xff0000'];
         this.maxHp = 100;
         this.hp = 100;
-
         this.startColor = this.colors[0];
         this.enemySpawnMinTime = 1000;
         this.enemySpawnMaxTime = 2000;
@@ -52,7 +51,6 @@ export default class GameScene extends Phaser.Scene {
         this.setSpriteColor(this.color);
 
         self = this;
-
         this.player.anims.play('left', true);
     }
 
@@ -100,7 +98,7 @@ export default class GameScene extends Phaser.Scene {
     createPlayer() {
         this.player = new Player({
             scene: this,
-            x: 72,
+            x: 200,
             y: 430,
             color: this.colors[0]
         });
@@ -162,10 +160,20 @@ export default class GameScene extends Phaser.Scene {
         this.scoreText.setPosition(game.canvas.width / 2 - this.scoreText.width, 150);
     }
 
+    updateHealth(enemyColor) {
+        if (self.player.color === enemyColor) {
+            this.hp -= 25;
+            this.healthText.setText('NEON GAS: ' + this.hp + '%');
+        }
+    }
+
     onCollision(player, enemy) {
         if (player.color === enemy.color) {
             var colorIndex = Math.round(Math.random() * (self.colors.length - 1));
+            console.log('Removed pickup', enemy.x);
             enemy.destroy();
+            self.enemies.slice(enemy, 1)
+
             self.moveSpeed += self.speedIncrement;
             player.setColor(self.colors[colorIndex]);
         } else {
@@ -192,18 +200,18 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
-        if (this.player.alive && this.health.hp > 0) {
+        var moveSpeed = this.moveSpeed;
+
+        //console.log(this.hp);
+        if (this.player.alive && this.hp > 0) {
             // Move background tiles
-            this.background.back._tilePosition.x += this.moveSpeed / 6 * delta;
-            this.background.middle._tilePosition.x += this.moveSpeed / 3 * delta;
-            this.background.fore._tilePosition.x += this.moveSpeed * delta;
+            this.background.back._tilePosition.x += moveSpeed / 6 * delta;
+            this.background.middle._tilePosition.x += moveSpeed / 3 * delta;
+            this.background.fore._tilePosition.x += moveSpeed * delta;
 
             // The player class update method must be called each cycle as the class is not currently part of a group
             this.player.update(time, delta);
             this.addScore(0.05);
-
-            var moveSpeed = this.moveSpeed;
-            var enemies = this.enemies;
 
             if (this.player.alive && !this.enemyIsSpawning) {
                 var spawnState = this;
@@ -215,12 +223,21 @@ export default class GameScene extends Phaser.Scene {
                 }, spawnDelay);
             }
 
+            var enemies = this.enemies;
             enemies.forEach(function (enemy, index) {
                 enemy.x -= moveSpeed * delta;
-                if (enemy.x < -50) {
-                    self.health.updateHealth(enemy.color);
-                    enemy.destroy();
-                    enemies.splice(index, 1);
+
+                if (enemy.color === self.player.color && enemy.active === true) {
+                    if (enemy.x < -71) {
+                        self.health.updateHealth(enemy.color)
+                        console.log('jumped over same color')
+                        enemy.destroy();
+                        enemies.splice(enemy, 1);
+                    }
+                } else {
+                    if (enemy.x <= -71) {
+                        enemy.destroy();
+                    }
                 }
             });
 

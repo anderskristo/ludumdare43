@@ -18,18 +18,14 @@ export default class Health extends Phaser.GameObjects.Shape {
         this.scene.add.existing(this);
     }
 
-    updateHealth(color) {
+    updateHealth(enemyColor) {
         this.color = this.scene.player.color;
 
-        if (this.color === color) {
-            console.log('adspkasjkhhdagsfvadghiadsadsgidhasujoiadsjbhdas');
+        if (this.color === enemyColor) {
             this.hp -= 25;
             this.healthText.setText('NEON GAS: ' + this.hp + '%');
 
-            if (this.hp === 0) {
-                this.scene.player.alive = false;
-                this.scene.gameOver();
-            }
+            this.scene.hp = this.hp;
         }
     }
 }
