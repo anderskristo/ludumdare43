@@ -17,6 +17,11 @@
                 "url": "assets/bg-middle.png"
             },
             {
+                "type": "image",
+                "key": "bg-fore",
+                "url": "assets/bg-fore.png"
+            },
+            {
                 "type": "spritesheet",
                 "key": "tiles",
                 "url": "assets/tiles.png",

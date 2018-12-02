@@ -41,8 +41,8 @@ export default class GameScene extends Phaser.Scene {
 
         this.moveSpeed = 10;
 
-        this.createScrollBg();
         this.createTiledMap();
+        this.createScrollBg();
         this.createPlayer();
         this.createHealth();
         this.initPhysics();
@@ -58,6 +58,7 @@ export default class GameScene extends Phaser.Scene {
     createScrollBg() {
         this.background.back = this.add.tileSprite(0, 0, Config.width, Config.height, 'bg-back').setOrigin(0, 0);
         this.background.middle = this.add.tileSprite(0, 0, Config.width, Config.height, 'bg-middle').setOrigin(0, 0);
+        this.background.fore = this.add.tileSprite(0, 0, Config.width, Config.height, 'bg-fore').setOrigin(0, 0);
     }
 
     setSpriteColor(color) {
@@ -73,10 +74,10 @@ export default class GameScene extends Phaser.Scene {
         // tiles for the ground layer
         var groundTiles = this.map.addTilesetImage('tiles');
         // create the ground layer
-        this.groundLayer = this.map.createDynamicLayer('World', groundTiles, 0, 0);
+        this.groundLayer = this.map.createDynamicLayer('World', groundTiles, 0, 35);
         // the player will collide with this layer
         this.groundLayer.setCollisionByExclusion([-1]);
-
+        
         // set the boundaries of our game world
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
@@ -193,6 +194,7 @@ export default class GameScene extends Phaser.Scene {
             // Move background tiles
             this.background.back._tilePosition.x += this.moveSpeed / 6;
             this.background.middle._tilePosition.x += this.moveSpeed / 3;
+            this.background.fore._tilePosition.x += this.moveSpeed;
 
             // The player class update method must be called each cycle as the class is not currently part of a group
             this.player.update(time, delta);
