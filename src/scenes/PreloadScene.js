@@ -68,7 +68,7 @@ export default class PreloadScene extends Phaser.Scene {
         }, this);
 
         // Cleanup after loading is done
-        this.load.on('completea', function () {
+        this.load.on('complete', function () {
             this.progress.destroy();
             this.percentText.destroy();
             this.assetText.destroy();
