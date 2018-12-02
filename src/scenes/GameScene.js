@@ -63,8 +63,6 @@ export default class GameScene extends Phaser.Scene {
         self = this;
 
         this.player.anims.play('left', true);
-
-        this.key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
        
         this.emitterConfig = {
             name: 'sparks',
@@ -238,9 +236,15 @@ export default class GameScene extends Phaser.Scene {
             this.restartButton = this.add.image(400, 120, "playButton").setInteractive();
 
             this.isGameOver = true;
+
+            // Delay space "listening" to avoid holding space will restart
+            setTimeout(function() {
+                self.key = self.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+                console.log('key',self.key)
+            }, 500);
         }
 
-        if (this.key.isDown) {
+        if (this.key && this.key.isDown) {
             self.scene.restart('GameScene');
             self.hp = self.maxHp;
             this.isGameOver = false;
