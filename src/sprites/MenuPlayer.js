@@ -25,5 +25,10 @@ export default class MenuPlayer extends Phaser.GameObjects.Sprite {
     setRandomVelocity() {
         var randomVelocity = Math.random() * 120 - 60;
         this.body.setVelocityX(randomVelocity);
+        if (randomVelocity < 0) {
+            this.flipX = true;
+        } else {
+            this.flipX = false;
+        }
     }
 }

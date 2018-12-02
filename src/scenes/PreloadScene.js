@@ -1,5 +1,5 @@
 import 'phaser';
-import MenuScene from './MenuScene';
+import IntroScene from './IntroScene';
 
 export default class PreloadScene extends Phaser.Scene {
     constructor() {
@@ -35,7 +35,7 @@ export default class PreloadScene extends Phaser.Scene {
     }
 
     create() {
-        this.scene.add('MenuScene', MenuScene);
-        this.scene.start('MenuScene');
+        this.scene.add('IntroScene', IntroScene);
+        this.scene.start('IntroScene');
     }
 }

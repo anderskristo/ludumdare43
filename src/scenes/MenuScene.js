@@ -27,7 +27,8 @@ export default class MenuScene extends Phaser.Scene {
 
         this.player.anims.play('left', true);
 
-        this.instructions = this.add.text(16, 200, 'Avoid blocks.\nSacrifice humans to\nthe Bacon king The Notorious P.I.G', { fontSize: '32px', fill: '#000' });
+        this.instructions = this.add.text(16, 200, 'Avoid blocks.\nSacrifice humans to\nthe Bacon king The Notorious P.I.G', { fontSize: '32px', fill: '#39ff14' });
+        this.key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.scene.add('GameScene', GameScene);
         var self = this;
@@ -63,6 +64,9 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        if (this.key.isDown) {
+            this.scene.start('GameScene');
+        }
         if (this.playerUpdateDelay > this.initPlayerUpdateDelay) {
             this.player.update(time, delta);
             this.playerUpdateDelay = 0;

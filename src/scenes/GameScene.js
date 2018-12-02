@@ -18,7 +18,7 @@ export default class GameScene extends Phaser.Scene {
         this.enemiesLayer;
         this.text;
         this.score = 0;
-        this.moveSpeed = 10;
+        this.moveSpeed;
         this.speedIncrement = 1;
         this.colors = ['0x00ff00', '0x0000ff', '0xffff00', '0xff0000'];
         this.startColor = this.colors[0];
@@ -33,11 +33,14 @@ export default class GameScene extends Phaser.Scene {
         this.enemiesLayer = this.physics.add.group(null);
         this.enemiesLayer.runChildUpdate = true;
 
+        this.moveSpeed = 10;
+
         this.createTiledMap();
         this.createPlayer();
         this.initPhysics();
         this.loadMusic();
         this.scoreHud();
+
         self = this;
 
         this.player.anims.play('left', true);
@@ -84,13 +87,14 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createEnemy() {
-        var spawnX = 800;
-        var spawnY = 460;
+        var spawnX = 800 + 35; // canvas width + half of sprite width
+        var spawnY = 450 + 10; // adjusted Y position. Magic number indeed. Calibrated though
+
         var color = Math.round(Math.random() * (this.colors.length - 1));
         console.log('colorindex', color)
 
         if (Math.random() < 0.5) {
-            spawnY -= this.player.height;
+            //spawnY -= this.player.height;
         }
 
         var enemy = new Enemy({
@@ -140,6 +144,7 @@ export default class GameScene extends Phaser.Scene {
         } else {
             player.alive = false
             enemy.x += 20
+            self.gameOver();
         }
     }
 
@@ -151,7 +156,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.music.stop();
         this.score = 0;
-        this.player.color = 'green';
+        this.player.anims.stop('left', true);
 
         var playButton = this.add.image(400, 120, "playButton").setInteractive();
         playButton.on("pointerdown", function (e) {
@@ -160,7 +165,6 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
-
         if (this.player.alive) {
             // The player class update method must be called each cycle as the class is not currently part of a group
             this.player.update(time, delta);
