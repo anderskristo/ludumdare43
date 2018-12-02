@@ -21,7 +21,7 @@ export default class GameScene extends Phaser.Scene {
         this.score = 0;
         this.moveSpeed;
         this.speedIncrement = 1;
-        this.colors = ['0x00ff00', '0x0000ff', '0xffff00', '0xff0000'];
+        this.colors = ['0x39ff14', '0x2cc3ff', '0xffff00', '0xff0000'];
         this.startColor = this.colors[0];
         this.enemySpawnMinTime = 1000;
         this.enemySpawnMaxTime = 2000;
