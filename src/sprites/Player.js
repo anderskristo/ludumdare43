@@ -21,6 +21,16 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         this.scene.add.existing(this);
         this.setColor(Config.color);
+
+        var self = this;
+
+        this.scene.input.on('pointerdown', function() {
+            self.key.isDown = true;
+        });
+
+        this.scene.input.on('pointerup', function() {
+            self.key.isDown = false;
+        });
     }
 
     jump() {
