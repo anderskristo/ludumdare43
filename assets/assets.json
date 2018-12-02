@@ -8,8 +8,13 @@
             },
             {
                 "type": "image",
-                "key": "bg",
-                "url": "assets/bg.png"
+                "key": "bg-back",
+                "url": "assets/bg-back.png"
+            },
+            {
+                "type": "image",
+                "key": "bg-middle",
+                "url": "assets/bg-middle.png"
             },
             {
                 "type": "spritesheet",
