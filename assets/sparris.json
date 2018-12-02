@@ -1,0 +1,119 @@
+{
+  "frames": [
+    {
+      "filename": "p1_walk1",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 70,
+        "h": 98
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 70,
+        "h": 98
+      },
+      "sourceSize": {
+        "w": 70,
+        "h": 98
+      }
+    },
+    {
+      "filename": "p1_walk2",
+      "frame": {
+        "x": 70,
+        "y": 0,
+        "w": 70,
+        "h": 98
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 70,
+        "h": 98
+      },
+      "sourceSize": {
+        "w": 70,
+        "h": 98
+      }
+    },
+    {
+      "filename": "p1_walk3",
+      "frame": {
+        "x": 140,
+        "y": 0,
+        "w": 70,
+        "h": 98
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 70,
+        "h": 98
+      },
+      "sourceSize": {
+        "w": 70,
+        "h": 98
+      }
+    },
+    {
+      "filename": "p1_walk4",
+      "frame": {
+        "x": 0,
+        "y": 98,
+        "w": 70,
+        "h": 98
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 70,
+        "h": 98
+      },
+      "sourceSize": {
+        "w": 70,
+        "h": 98
+      }
+    },
+    {
+      "filename": "p1_walk5",
+      "frame": {
+        "x": 70,
+        "y": 98,
+        "w": 70,
+        "h": 98
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 70,
+        "h": 98
+      },
+      "sourceSize": {
+        "w": 70,
+        "h": 98
+      }
+    }
+  ],
+  "meta": {
+    "app": "https://www.leshylabs.com/apps/sstool/",
+    "version": "Leshy SpriteSheet Tool v0.8.4",
+    "image": "sparris.png",
+    "size": {
+      "w": 210,
+      "h": 196
+    },
+    "scale": 1
+  }
+}

@@ -8,6 +8,13 @@ export default class MenuPlayer extends Phaser.GameObjects.Sprite {
         this.alive = true;
         this.scene.add.existing(this);
         this.setRandomVelocity();
+
+        game.anims.create({
+            key: 'left',
+            frames: game.anims.generateFrameNames('player'),
+            frameRate: 10,
+            repeat: -1
+        });
     }
 
     update(time, delta) {
@@ -18,5 +25,10 @@ export default class MenuPlayer extends Phaser.GameObjects.Sprite {
     setRandomVelocity() {
         var randomVelocity = Math.random() * 120 - 60;
         this.body.setVelocityX(randomVelocity);
+        if (randomVelocity < 0) {
+            this.flipX = true;
+        } else {
+            this.flipX = false;
+        }
     }
 }

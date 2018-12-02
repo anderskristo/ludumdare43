@@ -18,8 +18,8 @@
             {
                 "type": "atlas",
                 "key": "player",
-                "textureURL": "assets/player.png",
-                "atlasURL": "assets/player.json"
+                "textureURL": "assets/sparris.png",
+                "atlasURL": "assets/sparris.json"
             },
             {
                 "type": "atlas",

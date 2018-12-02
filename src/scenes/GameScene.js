@@ -30,12 +30,10 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
-        // coin image used as tileset
-        // var coinTiles = this.map.addTilesetImage('coin');
-        // // add coins as tiles
-        // this.coinLayer = this.map.createDynamicLayer('Coins', coinTiles, 0, 0);
         this.enemiesLayer = this.physics.add.group(null);
         this.enemiesLayer.runChildUpdate = true;
+
+        this.moveSpeed = 10;
 
         this.createTiledMap();
         this.createPlayer();
@@ -43,14 +41,16 @@ export default class GameScene extends Phaser.Scene {
         this.loadMusic();
         this.scoreHud();
 
-        this.moveSpeed = 10;
-
         self = this;
+
+        this.player.anims.play('left', true);
     }
 
     createTiledMap() {
         // load the map 
-        this.map = this.make.tilemap({ key: 'map' });
+        this.map = this.make.tilemap({
+            key: 'map'
+        });
 
         // tiles for the ground layer
         var groundTiles = this.map.addTilesetImage('tiles');
@@ -63,7 +63,7 @@ export default class GameScene extends Phaser.Scene {
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
 
-        this.cameras.main.setBackgroundColor(0xffc0cb);
+        this.cameras.main.setBackgroundColor(0x000000);
     }
 
     /**
@@ -89,6 +89,7 @@ export default class GameScene extends Phaser.Scene {
     createEnemy() {
         var spawnX = 800 + 35; // canvas width + half of sprite width
         var spawnY = 450 + 10; // adjusted Y position. Magic number indeed. Calibrated though
+
         var color = Math.round(Math.random() * (this.colors.length - 1));
         console.log('colorindex', color)
 
@@ -111,7 +112,7 @@ export default class GameScene extends Phaser.Scene {
         this.music = this.sound.add('trance');
         this.music.setLoop(true);
         this.music.play();
-        this.music.setVolume(.5);
+        this.music.setVolume(.1);
     }
 
     // this function will be called when the player touches a coin
@@ -154,10 +155,13 @@ export default class GameScene extends Phaser.Scene {
 
     gameOver() {
         this.moveSpeed = 0;
-        this.gameOverText = this.add.text(16, 200, 'You are dead.\nScore: ' + this.score, { fontSize: '32px', fill: '#000' });
+        this.gameOverText = this.add.text(16, 200, 'You are dead.\nScore: ' + this.score, {
+            fontSize: '32px',
+            fill: '#000'
+        });
 
         this.score = 0;
-        this.player.color = 'green';
+        this.player.anims.stop('left', true);
 
         var self = this;
         var playButton = this.add.image(400, 120, "playButton").setInteractive();
