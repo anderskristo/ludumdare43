@@ -172,16 +172,15 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createHud() {
-        this.scoreText = this.add.text(300, 150, this.score, {
+        this.scoreText = this.add.text(20, 130, this.score, {
             fontFamily: 'sans-serif',
             color: '#ffffff40',
             align: 'center',
-            fontSize: 158,
+            fontSize: 102,
             fontStyle: 'bold',
             padding: 0,
             width: 300
         });
-        this.scoreText.setPosition(game.canvas.width / 2 - this.scoreText.width, 150);
     }
 
     updateHealth(enemyColor) {
@@ -220,9 +219,13 @@ export default class GameScene extends Phaser.Scene {
 
     gameOver() {
         if (!this.isGameOver) {
-            this.gameOverText = this.add.text(16, 200, 'You are dead.', {
-                fontSize: '32px',
-                fill: '#fff'
+            this.gameOverText = this.add.text(20, 300, 'You are dead.\nPress SPACE to try again.', {
+                fontFamily: 'sans-serif',
+                color: '#ffffff40',
+                align: 'left',
+                fontSize: 42,
+                fontStyle: 'bold',
+                padding: 0,
             });
 
             this.music.stop();
@@ -239,8 +242,6 @@ export default class GameScene extends Phaser.Scene {
                 delay: 0
             });
 
-            this.restartButton = this.add.image(400, 120, "playButton").setInteractive();
-
             this.isGameOver = true;
 
             // Delay space "listening" to avoid holding space will restart
@@ -256,11 +257,11 @@ export default class GameScene extends Phaser.Scene {
             this.isGameOver = false;
         }
 
-        this.restartButton.on("pointerdown", function (e) {
+        /*this.restartButton.on("pointerdown", function (e) {
             self.scene.restart('GameScene');
             self.hp = self.maxHp;
             self.isGameOver = false;
-        });
+        }); */
     }
 
     update(time, delta) {
