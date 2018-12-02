@@ -8,6 +8,7 @@ export default class MenuPlayer extends Phaser.GameObjects.Sprite {
         this.alive = true;
         this.scene.add.existing(this);
         this.setRandomVelocity();
+        this.body.setCollideWorldBounds(true);
 
         game.anims.create({
             key: 'left',
@@ -25,6 +26,7 @@ export default class MenuPlayer extends Phaser.GameObjects.Sprite {
     setRandomVelocity() {
         var randomVelocity = Math.random() * 120 - 60;
         this.body.setVelocityX(randomVelocity);
+
         if (randomVelocity < 0) {
             this.flipX = true;
         } else {
