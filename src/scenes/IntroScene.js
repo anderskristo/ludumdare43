@@ -18,7 +18,7 @@ export default class IntroScene extends Phaser.Scene {
         var self = this;
 
         var introScene = this.add.image(400, 300, "introImage").setInteractive();
-        introScene.setDisplaySize(800,600);
+        introScene.setDisplaySize(600,600);
 
         introScene.on("pointerdown", function (e) {
             self.scene.start('MenuScene');
