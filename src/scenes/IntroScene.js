@@ -22,8 +22,6 @@ export default class IntroScene extends Phaser.Scene {
     }
 
     create() {
-        console.log('Intro Scene');
-
         this.scene.add('MenuScene', MenuScene);
         this.key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 

@@ -9,10 +9,9 @@ export default class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
-        console.log('testar preload');
-
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
+
         this.loadingText = this.make.text({
             x: width / 2,
             y: height / 2 - 50,
@@ -22,7 +21,7 @@ export default class PreloadScene extends Phaser.Scene {
                 fill: '#ffffff'
             }
         });
-        
+
         this.assetText = this.make.text({
             x: width / 2,
             y: height / 2 + 50,
@@ -34,7 +33,7 @@ export default class PreloadScene extends Phaser.Scene {
         });
         this.assetText.setOrigin(0.5, 0.5);
         this.loadingText.setOrigin(0.5, 0.5);
-        
+
 
         // Create background and prepare the loading bar
         this.cameras.main.setBackgroundColor(0x0c0b0b);

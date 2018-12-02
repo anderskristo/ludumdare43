@@ -294,7 +294,6 @@ export default class GameScene extends Phaser.Scene {
                 if (enemy.color === self.player.color && enemy.active === true) {
                     if (enemy.x < -71) {
                         self.health.updateHealth(enemy.color)
-                        console.log('jumped over same color')
                         enemy.destroy();
                         enemies.splice(enemy, 1);
                     }
