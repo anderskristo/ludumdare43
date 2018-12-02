@@ -111,11 +111,6 @@ export default class GameScene extends Phaser.Scene {
         this.music.setVolume(.1);
     }
 
-    // this function will be called when the player touches a coin
-    collectCoin(sprite, tile) {
-
-    }
-
     addScore(value) {
         this.score += value;
         this.scoreText.setText(this.score)
@@ -124,7 +119,7 @@ export default class GameScene extends Phaser.Scene {
     scoreHud() {
         this.scoreText = this.add.text(16, 200, this.score, {
             fontFamily: 'sans-serif',
-            color: '#00000040',
+            color: '#ffffff40',
             align: 'center',
             fontSize: 102,
             fontStyle: 'bold',
@@ -149,61 +144,56 @@ export default class GameScene extends Phaser.Scene {
     }
 
     gameOver() {
-        this.moveSpeed = 0;
-        this.gameOverText = this.add.text(16, 200, 'You are dead.\nScore: ' + this.score, {
+        this.gameOverText = this.add.text(16, 200, 'You are dead.', {
             fontSize: '32px',
-            fill: '#000'
+            fill: '#fff'
         });
 
+        this.music.stop();
         this.score = 0;
         this.player.color = 'green';
 
-        var self = this;
         var playButton = this.add.image(400, 120, "playButton").setInteractive();
-
         playButton.on("pointerdown", function (e) {
-            //self.scene.restart('GameScene');
-            self.scene.start('GameScene');
+            self.scene.restart('GameScene');
         });
     }
 
     update(time, delta) {
-        // The player class update method must be called each cycle as the class is not currently part of a group
-        this.player.update(time, delta);
-        this.addScore(1);
 
-        var moveSpeed = this.moveSpeed;
-        var enemies = this.enemies;
-        this.groundLayer.x -= moveSpeed;
+        if (this.player.alive) {
+            // The player class update method must be called each cycle as the class is not currently part of a group
+            this.player.update(time, delta);
+            this.addScore(1);
 
-        // Endless scrolling fugly hack
-        if (this.groundLayer.x < -this.map.widthInPixels / 2) {
-            this.groundLayer.x = 0;
-        }
+            var moveSpeed = this.moveSpeed;
+            var enemies = this.enemies;
+            this.groundLayer.x -= moveSpeed;
 
-        if (this.player.alive && !this.enemyIsSpawning) {
-            var self = this;
-            this.enemyIsSpawning = true;
-            var spawnDelay = Math.random() * (this.enemySpawnMaxTime - this.enemySpawnMinTime) + this.enemySpawnMinTime;
-            setTimeout(function () {
-                self.enemyIsSpawning = false;
-                self.createEnemy();
-            }, spawnDelay);
-        }
-
-        enemies.forEach(function (enemy, index) {
-            enemy.x -= moveSpeed;
-            if (enemy.x < -50) {
-                enemy.destroy();
-                enemies.splice(index, 1);
+            // Endless scrolling fugly hack
+            if (this.groundLayer.x < -this.map.widthInPixels / 2) {
+                this.groundLayer.x = 0;
             }
-        })
 
-        /**
-         * If Player dies, kill the game.
-         */
-        //this.player.alive = false;
-        if (this.player.alive === false) {
+            if (this.player.alive && !this.enemyIsSpawning) {
+                var self = this;
+                this.enemyIsSpawning = true;
+                var spawnDelay = Math.random() * (this.enemySpawnMaxTime - this.enemySpawnMinTime) + this.enemySpawnMinTime;
+                setTimeout(function () {
+                    self.enemyIsSpawning = false;
+                    self.createEnemy();
+                }, spawnDelay);
+            }
+
+            enemies.forEach(function (enemy, index) {
+                enemy.x -= moveSpeed;
+                if (enemy.x < -50) {
+                    enemy.destroy();
+                    enemies.splice(index, 1);
+                }
+            });
+
+        } else {
             this.gameOver();
         }
     }
