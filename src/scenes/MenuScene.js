@@ -60,6 +60,7 @@ export default class MenuScene extends Phaser.Scene {
             x: 200,
             y: 100
         });
+        this.player.setTint(0x39ff14);
     }
 
     update(time, delta) {
