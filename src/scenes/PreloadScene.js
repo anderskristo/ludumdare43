@@ -11,23 +11,68 @@ export default class PreloadScene extends Phaser.Scene {
     preload() {
         console.log('testar preload');
 
+        var width = this.cameras.main.width;
+        var height = this.cameras.main.height;
+        this.loadingText = this.make.text({
+            x: width / 2,
+            y: height / 2 - 50,
+            text: 'Loading...',
+            style: {
+                font: '20px monospace',
+                fill: '#ffffff'
+            }
+        });
+        this.percentText = this.make.text({
+            x: width / 2,
+            y: height / 2 - 5,
+            text: '0%',
+            style: {
+                font: '18px monospace',
+                fill: '#ffffff'
+            }
+        });
+
+        this.assetText = this.make.text({
+            x: width / 2,
+            y: height / 2 + 50,
+            text: '',
+            style: {
+                font: '18px monospace',
+                fill: '#ffffff'
+            }
+        });
+        this.assetText.setOrigin(0.5, 0.5);
+        this.loadingText.setOrigin(0.5, 0.5);
+        this.percentText.setOrigin(0.5, 0.5);
+
         // Create background and prepare the loading bar
         this.cameras.main.setBackgroundColor(0x0c0b0b);
         this.fullBar = this.add.graphics();
         this.fullBar.fillStyle(0xffffff, 1);
-        this.fullBar.fillRect((this.cameras.main.width / 4) - 2, (this.cameras.main.height / 2), (this.cameras.main.width / 2), 20);
+        this.fullBar.fillRect((width / 4) - 2, (height / 2), (width / 2), 20);
         this.progress = this.add.graphics();
 
         // Pass loading progress as value
         this.load.on('progress', function (value) {
+            this.percentText.setText(parseInt(value * 100) + '%');
             this.progress.clear();
             this.progress.fillStyle(0x00ff80, 1);
-            this.progress.fillRect((this.cameras.main.width / 4), (this.cameras.main.height / 2), (this.cameras.main.width / 2), 20);
+            this.progress.fillRect((this.cameras.main.width / 4), (height / 2), (width / 2), 20);
+        }, this);
+
+        // Pass loading progress as value
+        this.load.on('fileprogress', function (file) {
+            this.assetText.setText('Loading asset: ' + file.key);
+            this.progress.clear();
+            this.progress.fillStyle(0x00ff80, 1);
+            this.progress.fillRect((this.cameras.main.width / 4), (height / 2), (width / 2), 20);
         }, this);
 
         // Cleanup after loading is done
         this.load.on('complete', function () {
             this.progress.destroy();
+            this.percentText.destroy();
+            this.assetText.destroy();
             this.fullBar.destroy();
         }, this);
 
