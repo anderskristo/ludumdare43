@@ -10,6 +10,7 @@ export default class GameScene extends Phaser.Scene {
         });
 
         this.map;
+        this.background;
         this.player;
         this.enemies = [];
         this.cursors;
@@ -35,6 +36,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.moveSpeed = 10;
 
+        this.createScrollBg();
         this.createTiledMap();
         this.createPlayer();
         this.initPhysics();
@@ -44,6 +46,11 @@ export default class GameScene extends Phaser.Scene {
         self = this;
 
         this.player.anims.play('left', true);
+    }
+
+    createScrollBg() {
+        this.background = this.add.tileSprite(0,0, 800, 600, 'bg').setOrigin(0, 0);       
+        console.log(this.background);
     }
 
     createTiledMap() {
@@ -166,6 +173,9 @@ export default class GameScene extends Phaser.Scene {
 
     update(time, delta) {
         if (this.player.alive) {
+            // Move background tile
+            this.background._tilePosition.x += this.moveSpeed/4;
+
             // The player class update method must be called each cycle as the class is not currently part of a group
             this.player.update(time, delta);
             this.addScore(1);
