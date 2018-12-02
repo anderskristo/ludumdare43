@@ -23,6 +23,8 @@ export default class GameScene extends Phaser.Scene {
         this.moveSpeed;
         this.speedIncrement = 1;
         this.colors = ['0x39ff14', '0x2cc3ff', '0xffff00', '0xff0000'];
+        this.maxHp = 5;
+        this.hp = 1;
 
         this.startColor = this.colors[0];
         this.enemySpawnMinTime = 1000;
@@ -44,7 +46,7 @@ export default class GameScene extends Phaser.Scene {
         this.createHealth();
         this.initPhysics();
         this.loadMusic();
-        this.scoreHud();
+        this.createHud();
         this.setSpriteColor(this.color);
 
         self = this;
@@ -86,7 +88,6 @@ export default class GameScene extends Phaser.Scene {
      * and other objects based on group, run callbacks when appropriate
      */
     initPhysics() {
-        console.log(this.player, this.groundLayer)
         this.physics.add.collider(this.player, this.groundLayer);
         this.physics.add.collider(this.enemiesLayer, this.groundLayer);
         this.physics.add.collider(this.player, this.enemiesLayer, this.onCollision);
@@ -106,7 +107,8 @@ export default class GameScene extends Phaser.Scene {
             scene: this,
             x: 0,
             y: 0,
-            color: this.colors[0]
+            color: this.colors[0],
+            hp: this.hp
         });
     }
 
@@ -115,7 +117,6 @@ export default class GameScene extends Phaser.Scene {
         var spawnY = 450 + 10; // adjusted Y position. Magic number indeed. Calibrated though
 
         var color = Math.round(Math.random() * (this.colors.length - 1));
-        console.log('colorindex', color)
 
         if (Math.random() < 0.5) {
             //spawnY -= this.player.height;
@@ -144,8 +145,8 @@ export default class GameScene extends Phaser.Scene {
         this.scoreText.setText(this.score)
     }
 
-    scoreHud() {
-        this.scoreText = this.add.text(16, 200, this.score, {
+    createHud() {
+        this.scoreText = this.add.text(300, 100, this.score, {
             fontFamily: 'sans-serif',
             color: '#ffffff40',
             align: 'center',
@@ -153,18 +154,15 @@ export default class GameScene extends Phaser.Scene {
             fontStyle: 'bold',
             padding: 0,
         });
-
         this.scoreText.setPosition(game.canvas.width / 2 - this.scoreText.width, 100);
     }
 
     onCollision(player, enemy) {
-        console.log('collision', player.color, enemy.color);
         if (player.color === enemy.color) {
             var colorIndex = Math.round(Math.random() * (self.colors.length - 1));
             enemy.destroy();
             self.moveSpeed += self.speedIncrement;
             player.setColor(self.colors[colorIndex]);
-            console.log(player.color);
         } else {
             player.alive = false
             enemy.x += 20
@@ -185,11 +183,12 @@ export default class GameScene extends Phaser.Scene {
         var playButton = this.add.image(400, 120, "playButton").setInteractive();
         playButton.on("pointerdown", function (e) {
             self.scene.restart('GameScene');
+            self.hp = self.maxHp;
         });
     }
 
     update(time, delta) {
-        if (this.player.alive) {
+        if (this.player.alive && this.health.hp > 0) {
             // Move background tiles
             this.background.back._tilePosition.x += this.moveSpeed / 6;
             this.background.middle._tilePosition.x += this.moveSpeed / 3;
@@ -208,18 +207,19 @@ export default class GameScene extends Phaser.Scene {
             }
 
             if (this.player.alive && !this.enemyIsSpawning) {
-                var self = this;
+                var spawnState = this;
                 this.enemyIsSpawning = true;
                 var spawnDelay = Math.random() * (this.enemySpawnMaxTime - this.enemySpawnMinTime) + this.enemySpawnMinTime;
                 setTimeout(function () {
-                    self.enemyIsSpawning = false;
-                    self.createEnemy();
+                    spawnState.enemyIsSpawning = false;
+                    spawnState.createEnemy();
                 }, spawnDelay);
             }
 
             enemies.forEach(function (enemy, index) {
                 enemy.x -= moveSpeed;
                 if (enemy.x < -50) {
+                    self.health.updateHealth(enemy.color);
                     enemy.destroy();
                     enemies.splice(index, 1);
                 }
