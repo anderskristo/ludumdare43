@@ -38,6 +38,11 @@
                 "url": "assets/btn_play.png"
             },
             {
+                "type": "image",
+                "key": "introImage",
+                "url": "assets/intro.png"
+            },
+            {
                 "type": "audio",
                 "key": "jumpSound",
                 "url": "assets/sfx/jump.wav"

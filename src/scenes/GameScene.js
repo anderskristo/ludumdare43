@@ -18,7 +18,7 @@ export default class GameScene extends Phaser.Scene {
         this.enemiesLayer;
         this.text;
         this.score = 0;
-        this.moveSpeed = 10;
+        this.moveSpeed;
         this.speedIncrement = 1;
         this.colors = ['0x00ff00', '0x0000ff', '0xffff00', '0xff0000'];
         this.startColor = this.colors[0];
@@ -42,6 +42,8 @@ export default class GameScene extends Phaser.Scene {
         this.initPhysics();
         this.loadMusic();
         this.scoreHud();
+
+        this.moveSpeed = 10;
 
         self = this;
     }
@@ -85,13 +87,13 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createEnemy() {
-        var spawnX = 800;
-        var spawnY = 450;
+        var spawnX = 800 + 35; // canvas width + half of sprite width
+        var spawnY = 450 + 10; // adjusted Y position. Magic number indeed. Calibrated though
         var color = Math.round(Math.random() * (this.colors.length - 1));
         console.log('colorindex', color)
 
         if (Math.random() < 0.5) {
-            spawnY -= this.player.height;
+            //spawnY -= this.player.height;
         }
 
         var enemy = new Enemy({
@@ -146,6 +148,7 @@ export default class GameScene extends Phaser.Scene {
         } else {
             player.alive = false
             enemy.x += 20
+            self.gameOver();
         }
     }
 
@@ -166,6 +169,11 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time, delta) {
+        /**
+         * If Player is dead, don't run
+         */
+        if (!this.player.alive) return;
+        
         // The player class update method must be called each cycle as the class is not currently part of a group
         this.player.update(time, delta);
         this.addScore(1);
@@ -196,13 +204,5 @@ export default class GameScene extends Phaser.Scene {
                 enemies.splice(index, 1);
             }
         })
-
-        /**
-         * If Player dies, kill the game.
-         */
-        //this.player.alive = false;
-        if (this.player.alive === false) {
-            this.gameOver();
-        }
     }
 }
