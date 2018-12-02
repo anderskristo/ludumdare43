@@ -56,6 +56,11 @@
                 "type": "image",
                 "key": "introImage",
                 "url": "assets/intro.png"
+            },
+            {
+                "type": "image",
+                "key": "spark",
+                "url": "assets/spark.png"
             },            
             {
                 "type": "audio",

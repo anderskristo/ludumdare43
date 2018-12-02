@@ -31,6 +31,8 @@ export default class GameScene extends Phaser.Scene {
         this.enemySpawnMinTime = 1000;
         this.enemySpawnMaxTime = 2000;
         this.enemyIsSpawning = false;
+        this.emitterConfig;
+        this.emitter;
 
         var self;
     }
@@ -54,6 +56,21 @@ export default class GameScene extends Phaser.Scene {
         self = this;
 
         this.player.anims.play('left', true);
+       
+        this.emitterConfig = {
+            name: 'sparks',
+            x: 400,
+            y: 300,
+            speed: {min:150,max:580},
+            angle: {min:220,max:335},
+            scale: {start:1,end:0.2},
+            alpha: {start:0.5,end:0},
+            gravityX: 0,
+            gravityY: -300,
+            maxParticles: 100,
+            lifeSpan: 2000,
+            blendMode: 'SCREEN'
+        };
     }
 
     createScrollBg() {
@@ -163,14 +180,25 @@ export default class GameScene extends Phaser.Scene {
     }
 
     onCollision(player, enemy) {
-        if (player.color === enemy.color) {
-            var colorIndex = Math.round(Math.random() * (self.colors.length - 1));
-            enemy.destroy();
-            self.moveSpeed += self.speedIncrement;
-            player.setColor(self.colors[colorIndex]);
-        } else {
-            player.alive = false
-            self.gameOver();
+        if (player.alive) {
+            var newEmitterConfig = self.emitterConfig;
+            newEmitterConfig.x = player.x;
+            newEmitterConfig.y = player.y;
+            newEmitterConfig.tint = parseInt(player.color);
+            var newEmitter = self.add.particles('spark').createEmitter(newEmitterConfig);
+            setTimeout(function() {
+                newEmitter.explode();
+            }, 200);
+
+            if (player.color === enemy.color) {
+                var colorIndex = Math.round(Math.random() * (self.colors.length - 1));
+                self.moveSpeed += self.speedIncrement;
+                player.setColor(self.colors[colorIndex]);
+                enemy.destroy();
+            } else {
+                player.alive = false
+                self.gameOver();
+            }
         }
     }
 
@@ -183,6 +211,16 @@ export default class GameScene extends Phaser.Scene {
         this.music.stop();
         this.score = 0;
         this.player.anims.stop('left', true);
+
+        // Death animation
+        this.tweens.add({
+            targets: this.player,
+            x: 200,
+            alpha: 0,
+            ease: 'Power1',
+            duration: 1000,
+            delay: 0
+        });
 
         var playButton = this.add.image(400, 120, "playButton").setInteractive();
         playButton.on("pointerdown", function (e) {
