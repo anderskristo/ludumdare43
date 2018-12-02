@@ -1,5 +1,6 @@
 import 'phaser';
 
+import Config from '../config/config';
 import Player from '../sprites/player';
 import Enemy from '../sprites/enemy';
 import Health from '../sprites/health';
@@ -24,7 +25,7 @@ export default class GameScene extends Phaser.Scene {
         this.speedIncrement = 1;
         this.colors = ['0x39ff14', '0x2cc3ff', '0xffff00', '0xff0000'];
         this.maxHp = 5;
-        this.hp = 1;
+        this.hp = 5;
 
         this.startColor = this.colors[0];
         this.enemySpawnMinTime = 1000;
@@ -55,8 +56,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createScrollBg() {
-        this.background.back = this.add.tileSprite(0, 0, 800, 600, 'bg-back').setOrigin(0, 0);
-        this.background.middle = this.add.tileSprite(0, 0, 800, 600, 'bg-middle').setOrigin(0, 0);
+        this.background.back = this.add.tileSprite(0, 0, Config.width, Config.height, 'bg-back').setOrigin(0, 0);
+        this.background.middle = this.add.tileSprite(0, 0, Config.width, Config.height, 'bg-middle').setOrigin(0, 0);
     }
 
     setSpriteColor(color) {
@@ -113,7 +114,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createEnemy() {
-        var spawnX = 800 + 35; // canvas width + half of sprite width
+        var spawnX = Config.width + 35; // canvas width + half of sprite width
         var spawnY = 450 + 10; // adjusted Y position. Magic number indeed. Calibrated though
 
         var color = Math.round(Math.random() * (this.colors.length - 1));
@@ -199,12 +200,6 @@ export default class GameScene extends Phaser.Scene {
 
             var moveSpeed = this.moveSpeed;
             var enemies = this.enemies;
-            this.groundLayer.x -= moveSpeed;
-
-            // Endless scrolling fugly hack
-            if (this.groundLayer.x < -this.map.widthInPixels / 2) {
-                this.groundLayer.x = 0;
-            }
 
             if (this.player.alive && !this.enemyIsSpawning) {
                 var spawnState = this;

@@ -13,8 +13,4 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
         this.scene.add.existing(this);
     }
-
-    update(time, delta) {
-        //console.log(this.scene)
-    }
 }

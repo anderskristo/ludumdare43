@@ -1,5 +1,6 @@
 import 'phaser';
 
+import Config from '../config/config.js';
 import GameScene from './GameScene';
 import MenuPlayer from '../sprites/MenuPlayer';
 
@@ -19,21 +20,19 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     create() {
-        console.log('Menu Scene');
-
         this.createTiledMap();
         this.createPlayer();
         this.initPhysics();
 
         this.player.anims.play('left', true);
 
-        this.instructions = this.add.text(16, 200, 'Avoid blocks.\nSacrifice humans to\nthe Bacon king The Notorious P.I.G', { fontSize: '32px', fill: '#39ff14' });
+        this.instructions = this.add.text(40, 200, 'Avoid blocks.\nSacrifice humans to\nthe Bacon king The Notorious P.I.G', { fontSize: '32px', fill: '#39ff14' });
         this.key = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.scene.add('GameScene', GameScene);
         var self = this;
 
-        var playButton = this.add.image(400, 120, "playButton").setInteractive();
+        var playButton = this.add.image(Config.width/2, 120, "playButton").setInteractive();
 
         playButton.on("pointerdown", function (e) {
             self.scene.start('GameScene');
@@ -61,6 +60,7 @@ export default class MenuScene extends Phaser.Scene {
             x: 200,
             y: 100
         });
+        this.player.setTint(0x39ff14);
     }
 
     update(time, delta) {

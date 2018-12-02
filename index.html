@@ -5,29 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Spelet</title>
     <style>
+        @font-face {
+            font-family: "Neon";
+            src:url("assets/neon.ttf");
+        }
         html, body {
             height: 100%;
             margin: 0;
         }
         body {
-            background: #000;
+            background-color: #000;
+            background-image: url('assets/window_bg_tiled.png');
         }
         h1 {
-            color: brown;
+            padding-top: 10px;
+            margin: 0;
+            color: #fff;
             text-align: center;
-            font-family: sans-serif;
+            font-family: "Neon", sans-serif;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #00ff80, 0 0 30px #00ff80, 0 0 40px #00ff80, 0 0 55px #00ff80, 0 0 75px #00ff80;
         }
         canvas {
-            border: 5px solid brown;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%,-50%);
+            max-width: 100%;
+            max-height: 50vw;
         }
     </style>
 </head>
 <body>
     <script src="build/project.bundle.js" charset="utf-8"></script>
-    <h1>INSERT TITLE HERE</h1>
+    <h1>NEON ASPARAGUS</h1>
 </body>
 </html>
