@@ -187,12 +187,6 @@ export default class GameScene extends Phaser.Scene {
 
             var moveSpeed = this.moveSpeed;
             var enemies = this.enemies;
-            this.groundLayer.x -= moveSpeed;
-
-            // Endless scrolling fugly hack
-            if (this.groundLayer.x < -this.map.widthInPixels / 2) {
-                this.groundLayer.x = 0;
-            }
 
             if (this.player.alive && !this.enemyIsSpawning) {
                 var self = this;
