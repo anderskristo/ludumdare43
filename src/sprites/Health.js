@@ -5,10 +5,7 @@ export default class Health extends Phaser.GameObjects.Shape {
         this.scene = Config.scene;
         this.color = Config.color;
         this.hp = Config.hp;
-        // this.healthBar = this.scene.add.graphics();
-        // this.healthBar.fillStyle(0xffffff, 1);
 
-        console.log(this.hp);
         this.healthText = this.scene.add.text(20, 20, 'NEON GAS: ' + this.hp + '%', {
             fontFamily: 'sans-serif',
             color: '#ffffff40',
@@ -22,9 +19,12 @@ export default class Health extends Phaser.GameObjects.Shape {
     }
 
     updateHealth(color) {
+        this.color = this.scene.player.color;
+
         if (this.color === color) {
-            this.hp -= 1;
-            this.healthText.setText(this.hp);
+            console.log('adspkasjkhhdagsfvadghiadsadsgidhasujoiadsjbhdas');
+            this.hp -= 25;
+            this.healthText.setText('NEON GAS: ' + this.hp + '%');
 
             if (this.hp === 0) {
                 this.scene.player.alive = false;

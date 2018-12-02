@@ -24,8 +24,8 @@ export default class GameScene extends Phaser.Scene {
         this.moveSpeed;
         this.speedIncrement = 1;
         this.colors = ['0x39ff14', '0x2cc3ff', '0xffff00', '0xff0000'];
-        this.maxHp = 5;
-        this.hp = 5;
+        this.maxHp = 100;
+        this.hp = 100;
 
         this.startColor = this.colors[0];
         this.enemySpawnMinTime = 1000;
@@ -77,7 +77,7 @@ export default class GameScene extends Phaser.Scene {
         this.groundLayer = this.map.createDynamicLayer('World', groundTiles, 0, 35);
         // the player will collide with this layer
         this.groundLayer.setCollisionByExclusion([-1]);
-        
+
         // set the boundaries of our game world
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
