@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,20 @@
     <style>
         @font-face {
             font-family: "Neon";
-            src:url("assets/neon.ttf");
+            src: url("assets/neon.ttf");
         }
-        html, body {
+
+        html,
+        body {
             height: 100%;
             margin: 0;
         }
+
         body {
             background-color: #000;
             background-image: url('assets/window_bg_tiled.png');
         }
+
         h1 {
             padding-top: 40px;
             margin: 0;
@@ -25,18 +30,46 @@
             font-family: "Neon", sans-serif;
             text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #00ff80, 0 0 30px #00ff80, 0 0 40px #00ff80, 0 0 55px #00ff80, 0 0 75px #00ff80;
         }
+
+        div.made-by {
+            background-color: #000;
+            padding: 10px 5px;
+            position: absolute;
+            bottom: 0;
+            transform: translateX(-50%);
+            left: 50%;
+        }
+
+        h2,
+        a:link,
+        a:visited,
+        a:hover,
+        a:active {
+            margin: 0;
+            color: #fff;
+            text-align: center;
+            font-family: "Neon", sans-serif;
+            text-shadow: 0 0 5px #fff, 0 0 20px #00ff80, 0 0 30px #00ff80;
+        }
+
         canvas {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%,-50%);
+            transform: translate(-50%, -50%);
             max-width: 100%;
             max-height: 50vw;
         }
     </style>
 </head>
+
 <body>
     <script src="build/project.bundle.js" charset="utf-8"></script>
     <h1>NEON ASPARAGUS</h1>
+    <div class="made-by">
+        <h2>Made with asparagus by <a href="http://anderskristo.me">@anderskristo</a> | <a href="https://github.com/theBigBadBacon">@theBigBadBacon</a>
+            | <a href="https://github.com/sbtn/">@sbtn</a></h2>
+    </div>
 </body>
+
 </html>
