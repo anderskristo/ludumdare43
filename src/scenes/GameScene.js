@@ -21,6 +21,7 @@ export default class GameScene extends Phaser.Scene {
         this.enemiesLayer;
         this.text;
         this.score = 0;
+        this.highScore = 0;
         this.moveSpeed = 0.7;
         this.speedIncrement = 0.05;
         this.colors = ['0x83ffc1', '0x2cc3ff', '0xffff00', '0xff0000'];
@@ -171,9 +172,24 @@ export default class GameScene extends Phaser.Scene {
     addScore(value) {
         this.score += value;
         this.scoreText.setText(Math.round(this.score))
+        if (this.score > this.highScore) {
+            this.highScoreText.setText('Highscore: ' + Math.round(this.score).toString())
+        }
     }
 
     createHud() {
+        if (localStorage.getItem("asparagus_highscore")) {
+            this.highScore = localStorage.getItem("asparagus_highscore")
+        }
+        this.highScoreText = this.add.text(20, 120, 'Highscore: ' + Math.round(this.highScore).toString(), {
+            fontFamily: 'sans-serif',
+            color: '#ffffff40',
+            align: 'center',
+            fontSize: 20,
+            fontStyle: 'bold',
+            padding: 0,
+            width: 300
+        });
         this.scoreText = this.add.text(20, 130, this.score, {
             fontFamily: 'sans-serif',
             color: '#ffffff40',
@@ -230,6 +246,11 @@ export default class GameScene extends Phaser.Scene {
                 fontStyle: 'bold',
                 padding: 0,
             });
+
+            var highScore = localStorage.getItem("asparagus_highscore");
+            if (this.score > highScore) {
+                localStorage.setItem("asparagus_highscore", Math.round(this.score));
+            }
 
             this.music.stop();
             this.score = 0;
