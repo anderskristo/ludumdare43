@@ -50,7 +50,7 @@ export default class MenuScene extends Phaser.Scene {
     createTiledMap() {
         this.map = this.make.tilemap({ key: 'map' });
         var groundTiles = this.map.addTilesetImage('tiles');
-        this.groundLayer = this.map.createDynamicLayer('World', groundTiles, 0, 35);
+        this.groundLayer = this.map.createDynamicLayer('World', groundTiles, 0, 40);
         this.groundLayer.setCollisionByExclusion([-1]);
         this.physics.world.bounds.width = this.groundLayer.width;
         this.physics.world.bounds.height = this.groundLayer.height;
