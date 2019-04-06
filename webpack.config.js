@@ -15,17 +15,18 @@ module.exports = {
 
     module: {
         rules: [
-          {
-            test: [ /\.vert$/, /\.frag$/ ],
-            use: 'raw-loader'
-          }
+            {
+                test: [/\.vert$/, /\.frag$/],
+                use: 'raw-loader'
+            }
         ]
     },
 
     plugins: [
         new webpack.DefinePlugin({
             'CANVAS_RENDERER': JSON.stringify(true),
-            'WEBGL_RENDERER': JSON.stringify(true)
+            'WEBGL_RENDERER': JSON.stringify(true),
+            'PLUGIN_FBINSTANT': JSON.stringify(true)
         })
     ]
 

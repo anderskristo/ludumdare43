@@ -9,6 +9,9 @@ export default class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
+        this.facebook.once('startgame', this.create, this);
+        this.facebook.showLoadProgress(this);
+
         var width = this.cameras.main.width;
         var height = this.cameras.main.height;
 
